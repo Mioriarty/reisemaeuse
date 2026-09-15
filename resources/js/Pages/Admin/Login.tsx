@@ -20,7 +20,7 @@ export default function Login() {
                 className="w-full max-w-sm border border-ink bg-paper"
             >
                 <div className="hairline-b px-6 py-5">
-                    <h1 className="font-display text-xl font-bold tracking-tight">Reisemäuse</h1>
+                    <h1 className="font-display text-xl font-bold tracking-tight">Wandermäuse</h1>
                     <p className="mt-1 text-sm text-graphite">Verwaltung</p>
                 </div>
 

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class PostDeploy extends Command
 {
-    protected $signature = 'reisemaeuse:post-deploy
+    protected $signature = 'wandermaeuse:post-deploy
                             {--if-changed : Nur ausführen, wenn ein neuer Commit ausgecheckt wurde}';
 
     protected $description = 'Migrationen, Storage-Link und Caches nach einem Deploy';

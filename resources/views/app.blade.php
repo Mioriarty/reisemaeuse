@@ -6,15 +6,15 @@
     <meta name="theme-color" content="#f7f6f3">
 
     @php($seo = \App\Support\Seo::get())
-    @php($title = $seo['title'] ?? 'Reisemäuse')
+    @php($title = $seo['title'] ?? 'Wandermäuse')
     @php($description = $seo['description'] ?? 'Ein Reiseblog über unsere Reise durch Südamerika – mit Karte, Bildern und einer kleinen Komposition zu jedem Eintrag.')
 
-    <title>{{ $title === 'Reisemäuse' ? $title : $title.' – Reisemäuse' }}</title>
+    <title>{{ $title === 'Wandermäuse' ? $title : $title.' – Wandermäuse' }}</title>
     <meta name="description" content="{{ $description }}">
     <link rel="canonical" href="{{ $seo['url'] ?? url()->current() }}">
 
     {{-- Server-rendered so link previews work without SSR. --}}
-    <meta property="og:site_name" content="Reisemäuse">
+    <meta property="og:site_name" content="Wandermäuse">
     <meta property="og:locale" content="de_DE">
     <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}">
     <meta property="og:title" content="{{ $title }}">
@@ -30,7 +30,7 @@
         <meta property="article:published_time" content="{{ $seo['publishedAt'] }}">
     @endisset
 
-    <link rel="alternate" type="application/rss+xml" title="Reisemäuse" href="{{ route('feed') }}">
+    <link rel="alternate" type="application/rss+xml" title="Wandermäuse" href="{{ route('feed') }}">
 
     @routes
     {{-- Muss vor @vite stehen: sonst findet @vitejs/plugin-react im Dev-Modus

@@ -12,5 +12,5 @@ Falls du dich nicht angemeldet hast, ignoriere diese E-Mail einfach. Ohne Klick 
 passiert nichts und wir schreiben dir nicht wieder.
 
 Liebe Grüße
-die Reisemäuse
+die Wandermäuse
 </x-mail::message>

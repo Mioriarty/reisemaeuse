@@ -16,7 +16,7 @@ Eintrag lesen
 @endif
 
 Liebe Grüße
-die Reisemäuse
+die Wandermäuse
 
 <x-slot:subcopy>
 Du bekommst diese E-Mail, weil du dich für unseren Reise-Newsletter angemeldet hast.

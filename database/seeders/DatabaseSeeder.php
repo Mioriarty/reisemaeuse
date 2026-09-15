@@ -13,10 +13,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Local development only. On the real site the account is created with
-        // `php artisan reisemaeuse:admin`, which asks for a real password.
+        // `php artisan wandermaeuse:admin`, which asks for a real password.
         if (app()->isLocal()) {
             User::firstOrCreate(
-                ['email' => 'admin@reisemause.test'],
+                ['email' => 'admin@wandermaeuse.test'],
                 [
                     'name' => 'Moritz',
                     'password' => Hash::make('passwort-fuer-lokal'),

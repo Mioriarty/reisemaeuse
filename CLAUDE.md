@@ -1,4 +1,4 @@
-# reisemäuse
+# wandermäuse
 
 Reiseblog auf Laravel 13 + Inertia 3 + React 19 + TypeScript + Tailwind 4.
 Öffentliche Seite auf Deutsch, Verwaltung unter `/admin`.

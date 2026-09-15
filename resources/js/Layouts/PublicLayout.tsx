@@ -22,7 +22,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             <header className="sticky top-0 z-50 border-b border-ink bg-paper/95 backdrop-blur-sm">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
                     <Link href="/" className="font-display text-lg font-bold tracking-tight">
-                        Reisemäuse
+                        Wandermäuse
                     </Link>
 
                     <nav className="hidden gap-8 sm:flex" aria-label="Hauptnavigation">
@@ -84,7 +84,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                 <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
                     <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
                         <div>
-                            <p className="font-display text-lg font-bold tracking-tight">Reisemäuse</p>
+                            <p className="font-display text-lg font-bold tracking-tight">Wandermäuse</p>
                             <p className="mt-2 max-w-xs text-sm leading-relaxed text-graphite">
                                 Ein Reisetagebuch aus Südamerika – mit Bildern, Karte und zu jedem Eintrag
                                 einer kleinen Komposition.

@@ -4,7 +4,7 @@ import { AudioProvider } from '@/lib/audio';
 import '../css/app.css';
 
 createInertiaApp({
-    title: (title) => (title ? `${title} – Reisemäuse` : 'Reisemäuse'),
+    title: (title) => (title ? `${title} – Wandermäuse` : 'Wandermäuse'),
     // Lazy, so each page is its own chunk. It matters here: the admin editor
     // pulls in a rich-text stack that a visitor reading on a phone must never
     // have to download.

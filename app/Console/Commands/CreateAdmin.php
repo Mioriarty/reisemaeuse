@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CreateAdmin extends Command
 {
-    protected $signature = 'reisemaeuse:admin
+    protected $signature = 'wandermaeuse:admin
                             {--name= : Anzeigename}
                             {--email= : E-Mail-Adresse für den Login}';
 

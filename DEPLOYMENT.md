@@ -1,4 +1,4 @@
-# reisemause.de auf netcup einrichten
+# wandermaeuse.de auf netcup einrichten
 
 Einmalige Einrichtung. Danach reicht `git push` auf `main` – alles Weitere läuft
 automatisch.
@@ -61,7 +61,7 @@ Laravel darf nur den Ordner `public/` ausliefern – sonst liegen `.env` und
 
 ## 3. Git-Deployment im WCP
 
-- Repository: `https://github.com/Mioriarty/reisemaeuse.git`
+- Repository: `https://github.com/Mioriarty/wandermaeuse.git`
 - Branch: **`deploy`** (nicht `main` – auf `main` fehlen `vendor/` und die
   gebauten Assets)
 - Zielverzeichnis: `httpdocs`
@@ -75,7 +75,7 @@ Laravel darf nur den Ordner `public/` ausliefern – sonst liegen `.env` und
 ## 4. Datenbank und Postfach
 
 - Im WCP eine **MySQL-Datenbank** anlegen.
-- Ein Postfach `newsletter@reisemause.de` anlegen; die Zugangsdaten kommen in
+- Ein Postfach `newsletter@wandermaeuse.de` anlegen; die Zugangsdaten kommen in
   die `.env`.
 
 ## 5. `.env` anlegen
@@ -90,7 +90,7 @@ nano .env          # DB_*, MAIL_* und APP_URL eintragen
 php artisan key:generate
 php artisan migrate --force
 php artisan storage:link
-php artisan reisemaeuse:admin --name="Moritz" --email="du@example.org"
+php artisan wandermaeuse:admin --name="Moritz" --email="du@example.org"
 ```
 
 `APP_DEBUG=false` und `APP_ENV=production` müssen gesetzt sein.
@@ -129,7 +129,7 @@ von Hand etwas ändern.
 | Weiße Seite, 500er | `open_basedir` umfasst `httpdocs` nicht, oder `.env` fehlt |
 | `.env` im Browser erreichbar | Dokumentenstamm zeigt auf `httpdocs` statt `httpdocs/public` |
 | Bilder fehlen (404) | `php artisan storage:link` erneut ausführen |
-| Neue Migration nicht eingespielt | `php artisan reisemaeuse:post-deploy` von Hand ausführen |
+| Neue Migration nicht eingespielt | `php artisan wandermaeuse:post-deploy` von Hand ausführen |
 | Newsletter bleibt bei „wird versendet“ | Cronjob läuft nicht – Schritt 6 prüfen |
 | Composer-Fehler beim Deploy | Falscher Branch: netcup muss `deploy` ziehen, nicht `main` |
 

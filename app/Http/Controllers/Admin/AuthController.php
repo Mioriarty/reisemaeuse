@@ -13,7 +13,7 @@ use Inertia\Response;
 
 /**
  * Login for the two of us. There is no registration and no public password
- * reset - accounts are created with `php artisan reisemaeuse:admin`.
+ * reset - accounts are created with `php artisan wandermaeuse:admin`.
  */
 class AuthController extends Controller
 {

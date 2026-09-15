@@ -21,7 +21,7 @@ Schedule::command('queue:work --stop-when-empty --max-time=50 --tries=3')
 
 // A deploy self-heals within a minute even when netcup's Git deploy actions
 // silently do not run, which they sometimes do not.
-Schedule::command('reisemaeuse:post-deploy --if-changed')
+Schedule::command('wandermaeuse:post-deploy --if-changed')
     ->everyMinute()
     ->withoutOverlapping();
 

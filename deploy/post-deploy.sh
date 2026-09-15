@@ -8,6 +8,6 @@ cd "$(dirname "$0")/.."
 
 PHP="${PHP_BIN:-php}"
 
-"$PHP" artisan reisemaeuse:post-deploy
+"$PHP" artisan wandermaeuse:post-deploy
 
 echo "Deploy abgeschlossen."

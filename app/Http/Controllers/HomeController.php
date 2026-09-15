@@ -21,7 +21,7 @@ class HomeController extends Controller
         $stops = Stop::orderBy('position')->get();
 
         Seo::set(
-            title: 'Reisemäuse',
+            title: 'Wandermäuse',
             description: 'Ein Reiseblog über unsere Reise durch Südamerika – mit Karte, Bildern und einer kleinen Komposition zu jedem Eintrag.',
             image: $posts->first()?->coverMedia?->url(),
         );

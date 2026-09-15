@@ -1,6 +1,6 @@
-# reisemäuse
+# wandermäuse
 
-Ein Reiseblog für unsere Südamerikareise – [reisemause.de](https://reisemause.de).
+Ein Reiseblog für unsere Südamerikareise – [wandermaeuse.de](https://wandermaeuse.de).
 
 Jeder Eintrag zeigt zuerst die Karte mit der ganzen Route und der aktuellen
 Station, dann die Komposition, die dort entstanden ist, dann den Text mit den
@@ -57,7 +57,7 @@ Alles ist bereits installiert, eingerichtet und mit einer Demo-Reise gefüllt.
 Ein Befehl genügt:
 
 ```sh
-cd ~/Desktop/Coding/reisemaeuse
+cd ~/Desktop/Coding/wandermaeuse
 php artisan dev
 ```
 
@@ -71,7 +71,7 @@ Fenster. Beenden mit `Ctrl+C`.
 | Die Route | <http://localhost:8000/reise> |
 | Verwaltung | <http://localhost:8000/admin> |
 
-Lokaler Login: **`admin@reisemause.test`** / **`passwort-fuer-lokal`**
+Lokaler Login: **`admin@wandermaeuse.test`** / **`passwort-fuer-lokal`**
 
 Die Demo-Bilder sind farbige Platzhalter, keine echten Fotos – zum Anschauen
 der Muster reicht das. Eigene Bilder kannst du unter *Verwaltung → Bilder*
@@ -104,7 +104,7 @@ php artisan dev
 Ein echtes Konto statt des Demo-Logins:
 
 ```sh
-php artisan reisemaeuse:admin
+php artisan wandermaeuse:admin
 ```
 
 ---
@@ -148,7 +148,7 @@ kommt Laravel nicht an `vendor/` und die Seite bleibt weiß.
 
 **3 – Git im WCP einrichten.**
 
-- Repository: `https://github.com/Mioriarty/reisemaeuse.git`
+- Repository: `https://github.com/Mioriarty/wandermaeuse.git`
 - Branch: **`deploy`** ← nicht `main`, dort fehlen `vendor/` und die Assets
 - Zielverzeichnis: `httpdocs`
 - Für das private Repo einen SSH-Schlüssel auf dem Webspace erzeugen und den
@@ -156,7 +156,7 @@ kommt Laravel nicht an `vendor/` und die Seite bleibt weiß.
   Zugangsdaten in der URL lehnt netcup ab.
 
 **4 – Datenbank und Postfach anlegen.** Eine MySQL-Datenbank im WCP, dazu ein
-Postfach `newsletter@reisemause.de` für die Bestätigungs- und Newsletter-Mails.
+Postfach `newsletter@wandermaeuse.de` für die Bestätigungs- und Newsletter-Mails.
 
 **5 – `.env` anlegen.** Die liegt bewusst nicht im Repository:
 
@@ -169,7 +169,7 @@ nano .env     # DB_*, MAIL_* und APP_URL eintragen, APP_DEBUG=false
 php artisan key:generate
 php artisan migrate --force
 php artisan storage:link
-php artisan reisemaeuse:admin      # dein echtes Login
+php artisan wandermaeuse:admin      # dein echtes Login
 ```
 
 **6 – Cronjob anlegen.** Im WCP unter *Geplante Aufgaben*, **jede Minute**:
@@ -202,7 +202,7 @@ Der Rest läuft von allein. Auf dem Branch `deploy` **niemals** von Hand etwas
 | Weiße Seite, 500er | `open_basedir` umfasst `httpdocs` nicht, oder `.env` fehlt |
 | `.env` im Browser erreichbar | Dokumentenstamm zeigt auf `httpdocs` statt `httpdocs/public` |
 | Bilder fehlen (404) | `php artisan storage:link` erneut ausführen |
-| Neue Migration fehlt | `php artisan reisemaeuse:post-deploy` von Hand ausführen |
+| Neue Migration fehlt | `php artisan wandermaeuse:post-deploy` von Hand ausführen |
 | Newsletter bleibt bei „wird versendet“ | Cronjob läuft nicht – Schritt 6 prüfen |
 | Composer-Fehler beim Deploy | Falscher Branch: netcup muss `deploy` ziehen, nicht `main` |
 

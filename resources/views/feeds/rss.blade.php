@@ -1,7 +1,7 @@
 <?= '<?xml version="1.0" encoding="UTF-8"?>'."\n" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Reisemäuse</title>
+        <title>Wandermäuse</title>
         <link>{{ url('/') }}</link>
         <atom:link href="{{ route('feed') }}" rel="self" type="application/rss+xml"/>
         <description>Ein Reiseblog über unsere Reise durch Südamerika.</description>

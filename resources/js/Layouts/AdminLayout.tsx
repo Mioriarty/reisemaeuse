@@ -27,7 +27,7 @@ export default function AdminLayout({ children, title, actions }: Props) {
                 <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-3">
                     <div className="flex items-center gap-8">
                         <Link href="/admin" className="font-display text-base font-bold tracking-tight">
-                            Reisemäuse<span className="text-graphite"> / Verwaltung</span>
+                            Wandermäuse<span className="text-graphite"> / Verwaltung</span>
                         </Link>
                         <nav className="flex flex-wrap gap-6" aria-label="Verwaltung">
                             {NAV.map((item) => {
