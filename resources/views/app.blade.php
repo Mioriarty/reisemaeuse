@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de" class="antialiased">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f6f3">
+
+    @php($seo = \App\Support\Seo::get())
+    @php($title = $seo['title'] ?? 'Reisemäuse')
+    @php($description = $seo['description'] ?? 'Ein Reiseblog über unsere Reise durch Südamerika – mit Karte, Bildern und einer kleinen Komposition zu jedem Eintrag.')
+
+    <title>{{ $title === 'Reisemäuse' ? $title : $title.' – Reisemäuse' }}</title>
+    <meta name="description" content="{{ $description }}">
+    <link rel="canonical" href="{{ $seo['url'] ?? url()->current() }}">
+
+    {{-- Server-rendered so link previews work without SSR. --}}
+    <meta property="og:site_name" content="Reisemäuse">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:url" content="{{ $seo['url'] ?? url()->current() }}">
+    @isset($seo['image'])
+        <meta property="og:image" content="{{ $seo['image'] }}">
+        <meta name="twitter:card" content="summary_large_image">
+    @else
+        <meta name="twitter:card" content="summary">
+    @endisset
+    @isset($seo['publishedAt'])
+        <meta property="article:published_time" content="{{ $seo['publishedAt'] }}">
+    @endisset
+
+    <link rel="alternate" type="application/rss+xml" title="Reisemäuse" href="{{ route('feed') }}">
+
+    @routes
+    {{-- Muss vor @vite stehen: sonst findet @vitejs/plugin-react im Dev-Modus
+         seine Preamble nicht und die Seite hydratisiert nie. --}}
+    @viteReactRefresh
+    @vite(['resources/css/app.css', 'resources/js/app.tsx'])
+    @inertiaHead
+</head>
+<body class="min-h-screen bg-paper text-ink">
+    @inertia
+</body>
+</html>

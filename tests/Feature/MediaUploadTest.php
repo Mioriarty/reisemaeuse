@@ -1,0 +1,108 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Media;
+use App\Models\User;
+use App\Services\MediaService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
+
+class MediaUploadTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Storage::fake('public');
+    }
+
+    public function test_an_upload_produces_every_width_in_both_formats(): void
+    {
+        $file = UploadedFile::fake()->image('strand.jpg', 1800, 1200);
+
+        $media = app(MediaService::class)->store($file);
+
+        $this->assertSame(1800, $media->width);
+        $this->assertSame(1200, $media->height);
+        $this->assertSame(1.5, $media->aspect_ratio);
+
+        // 2400 is wider than the original, so it is skipped rather than upscaled.
+        $this->assertSame([480, 960, 1600], array_keys($media->variants['webp']));
+        $this->assertSame([480, 960, 1600], array_keys($media->variants['jpeg']));
+
+        Storage::disk('public')->assertExists($media->path);
+        foreach ($media->variants as $paths) {
+            foreach ($paths as $path) {
+                Storage::disk('public')->assertExists($path);
+            }
+        }
+    }
+
+    public function test_a_small_image_still_gets_one_variant(): void
+    {
+        $file = UploadedFile::fake()->image('klein.jpg', 300, 300);
+
+        $media = app(MediaService::class)->store($file);
+
+        $this->assertNotEmpty($media->variants['webp']);
+        $this->assertNotEmpty($media->variants['jpeg']);
+        Storage::disk('public')->assertExists(array_values($media->variants['webp'])[0]);
+    }
+
+    public function test_the_srcset_lists_every_generated_width(): void
+    {
+        $media = app(MediaService::class)->store(UploadedFile::fake()->image('a.jpg', 1000, 500));
+
+        $srcset = $media->srcset();
+
+        $this->assertStringContainsString('480w', $srcset);
+        $this->assertStringContainsString('960w', $srcset);
+        $this->assertStringNotContainsString('1600w', $srcset);
+    }
+
+    public function test_a_dominant_colour_is_stored_for_the_placeholder(): void
+    {
+        $media = app(MediaService::class)->store(UploadedFile::fake()->image('a.jpg', 600, 400));
+
+        $this->assertMatchesRegularExpression('/^#[0-9a-f]{6}$/i', $media->dominant_color);
+    }
+
+    public function test_deleting_removes_the_record_and_every_file(): void
+    {
+        $service = app(MediaService::class);
+        $media = $service->store(UploadedFile::fake()->image('weg.jpg', 1000, 800));
+
+        $paths = [$media->path];
+        foreach ($media->variants as $group) {
+            $paths = [...$paths, ...array_values($group)];
+        }
+
+        $service->delete($media);
+
+        $this->assertDatabaseCount('media', 0);
+        foreach ($paths as $path) {
+            Storage::disk('public')->assertMissing($path);
+        }
+    }
+
+    public function test_the_upload_endpoint_rejects_a_non_image(): void
+    {
+        $this->actingAs(User::factory()->create())
+            ->post('/admin/bilder', ['files' => [UploadedFile::fake()->create('lied.mp3', 100)]])
+            ->assertSessionHasErrors('files.0');
+
+        $this->assertDatabaseCount('media', 0);
+    }
+
+    public function test_a_guest_cannot_upload(): void
+    {
+        $this->post('/admin/bilder', ['files' => [UploadedFile::fake()->image('x.jpg')]])
+            ->assertRedirect('/admin/login');
+
+        $this->assertSame(0, Media::count());
+    }
+}

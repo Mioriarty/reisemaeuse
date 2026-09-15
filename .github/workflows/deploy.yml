@@ -1,0 +1,95 @@
+name: Build & Deploy
+
+# Baut einen fertig lauffähigen Stand und schiebt ihn auf den Branch `deploy`,
+# den netcup auscheckt. Auf dem Webspace wird dadurch weder Node noch Composer
+# gebraucht - beides ist dort unzuverlässig bis gar nicht vorhanden.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, gd, pdo_sqlite, zip, intl, exif
+          coverage: none
+
+      - name: Composer-Pakete installieren
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: php artisan test
+
+  deploy:
+    name: Deploy-Branch bauen
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          # Muss zur PHP-Version auf dem Webspace passen (siehe DEPLOYMENT.md).
+          php-version: '8.3'
+          extensions: mbstring, gd, pdo_mysql, zip, intl, exif
+          coverage: none
+
+      - name: Composer-Pakete ohne Dev-Abhängigkeiten
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Assets bauen
+        run: |
+          npm ci
+          npm run build
+
+      - name: Auf den Branch deploy schieben
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Auf dem Deploy-Branch gehören vendor/ und public/build/ dazu,
+          # Tests und Quell-Konfiguration dagegen nicht.
+          cat > .gitignore <<'EOF'
+          /node_modules
+          /.github
+          /tests
+          /.git
+          .env
+          *.log
+          .DS_Store
+          /database/database.sqlite
+          EOF
+
+          rm -rf tests phpunit.xml
+
+          git checkout --orphan deploy
+          # Ohne -f: die frisch geschriebene .gitignore soll gelten, sonst
+          # landet node_modules mit im Deploy-Branch.
+          git add -A
+          git commit -m "Build von ${GITHUB_SHA::7}"
+          git push --force origin deploy

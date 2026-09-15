@@ -1,0 +1,176 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+/*
+ * reisemause.de design tokens.
+ *
+ * Modernist and blocky: no rounded corners anywhere, hairlines instead of
+ * shadows, a near-neutral palette so the photographs carry all the colour.
+ * The accent is used sparingly - the active map stop, link hovers, the play
+ * button - and nowhere else.
+ */
+@theme {
+    --color-paper: #f7f6f3;
+    --color-paper-dim: #efeeea;
+    --color-paper-deep: #e6e4de;
+    --color-ink: #141414;
+    --color-ink-soft: #3d3d3d;
+    --color-graphite: #6b6b6b;
+    --color-hairline: #dedcd6;
+    /* Landmasse der Karte: muss sich vom Kartenhintergrund abheben,
+       ohne mit den Fotos zu konkurrieren. */
+    --color-map-land: #dbd7cd;
+    --color-accent: #b4432a;
+    --color-accent-dim: #d9a294;
+
+    --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    /* Blocky by construction: every radius scale step collapses to zero. */
+    --radius-xs: 0px;
+    --radius-sm: 0px;
+    --radius-md: 0px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
+    --radius-2xl: 0px;
+    --radius-3xl: 0px;
+
+    --text-display: 4.5rem;
+    --text-display--line-height: 0.95;
+    --text-display--letter-spacing: -0.03em;
+}
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        background-color: var(--color-paper);
+        color: var(--color-ink);
+        font-family: var(--font-sans);
+        font-feature-settings: 'kern', 'liga';
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    /* Nothing in this design is round. */
+    *,
+    *::before,
+    *::after {
+        border-radius: 0;
+    }
+
+    ::selection {
+        background-color: var(--color-ink);
+        color: var(--color-paper);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-ink);
+        outline-offset: 2px;
+    }
+}
+
+@utility hairline-t {
+    border-top: 1px solid var(--color-hairline);
+}
+
+@utility hairline-b {
+    border-bottom: 1px solid var(--color-hairline);
+}
+
+@utility label-xs {
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+/* The measured column the running text sits in. */
+@utility prose-column {
+    max-width: 34rem;
+
+    & p {
+        margin-bottom: 1.25em;
+        line-height: 1.7;
+    }
+
+    & p:last-child {
+        margin-bottom: 0;
+    }
+
+    & a {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-thickness: 1px;
+    }
+
+    & a:hover {
+        color: var(--color-accent);
+    }
+
+    & strong {
+        font-weight: 600;
+    }
+
+    & em {
+        font-style: italic;
+    }
+
+    & ul,
+    & ol {
+        margin-bottom: 1.25em;
+        padding-left: 1.25em;
+        line-height: 1.7;
+    }
+
+    & ul {
+        list-style: square;
+    }
+
+    & ol {
+        list-style: decimal;
+    }
+}
+
+/*
+ * The seek control in the composition player. Browsers draw a round, blue
+ * thumb by default - the only saturated colour on the whole page and the only
+ * round thing in the design. So it is drawn by hand instead.
+ */
+@utility seek {
+    appearance: none;
+    background-color: transparent;
+
+    &::-webkit-slider-thumb {
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        border: 0;
+        background-color: var(--color-ink);
+        cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+        width: 14px;
+        height: 14px;
+        border: 0;
+        border-radius: 0;
+        background-color: var(--color-ink);
+        cursor: pointer;
+    }
+
+    &:disabled::-webkit-slider-thumb {
+        background-color: var(--color-hairline);
+        cursor: default;
+    }
+
+    &:disabled::-moz-range-thumb {
+        background-color: var(--color-hairline);
+        cursor: default;
+    }
+}
