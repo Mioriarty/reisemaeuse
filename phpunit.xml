@@ -19,6 +19,11 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <!-- Fester Test-Schlüssel, damit `php artisan test` ohne .env läuft -
+             also auch auf CI und in einem frischen Klon. Verschlüsselt nur
+             Wegwerf-Sessions der Tests; produktiv wird auf dem Server ein
+             eigener Schlüssel per `php artisan key:generate` erzeugt. -->
+        <env name="APP_KEY" value="base64:MeZ5K6i7lTy5SJa9K+O0lT2rocyGF5QcrVpGbez0HA0="/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>

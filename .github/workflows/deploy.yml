@@ -72,20 +72,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Auf dem Deploy-Branch gehören vendor/ und public/build/ dazu,
-          # Tests und Quell-Konfiguration dagegen nicht.
+          # vendor/ und public/build/ stehen in der normalen .gitignore und
+          # müssen auf dem Deploy-Branch mit hinein - also wird sie ersetzt.
+          # Übrig bleibt nur, was wirklich draußen bleiben soll.
           cat > .gitignore <<'EOF'
           /node_modules
-          /.github
-          /tests
-          /.git
           .env
           *.log
           .DS_Store
           /database/database.sqlite
           EOF
 
-          rm -rf tests phpunit.xml
+          # Bereits versionierte Dateien ignoriert .gitignore nicht mehr -
+          # die müssen weg, sonst landen sie auf dem Webspace.
+          rm -rf tests phpunit.xml .github
 
           git checkout --orphan deploy
           # Ohne -f: die frisch geschriebene .gitignore soll gelten, sonst
