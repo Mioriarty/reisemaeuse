@@ -131,6 +131,7 @@ von Hand etwas ändern.
 | Bilder fehlen (404) | `php artisan storage:link` erneut ausführen |
 | Neue Migration nicht eingespielt | `php artisan wandermaeuse:post-deploy` von Hand ausführen |
 | Newsletter bleibt bei „wird versendet“ | Cronjob läuft nicht – Schritt 6 prüfen |
+| Anmeldung zum Newsletter liefert 500, Log zeigt `535` | `MAIL_HOST`/`MAIL_USERNAME`/`MAIL_PASSWORD` falsch. `MAIL_HOST` muss der netcup-Mailserver sein (`dig +short MX wandermaeuse.de`), danach `php artisan config:clear` |
 | Composer-Fehler beim Deploy | Falscher Branch: netcup muss `deploy` ziehen, nicht `main` |
 
 ## Sicherungen

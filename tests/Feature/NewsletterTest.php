@@ -32,6 +32,37 @@ class NewsletterTest extends TestCase
         Mail::assertSent(ConfirmSubscription::class);
     }
 
+    public function test_a_failing_mailer_reports_an_error_instead_of_a_500(): void
+    {
+        Mail::shouldReceive('to->send')->andThrow(
+            new \Symfony\Component\Mailer\Exception\TransportException('535 Incorrect authentication data'),
+        );
+
+        $this->post('/newsletter', ['email' => 'neu@example.org'])
+            ->assertRedirect()
+            ->assertSessionHasErrors('email');
+
+        $this->assertNull(
+            Subscriber::firstWhere('email', 'neu@example.org'),
+            'A row created just before a failing send is rolled back.',
+        );
+    }
+
+    public function test_a_failing_mailer_keeps_an_address_that_already_existed(): void
+    {
+        $existing = Subscriber::create(['email' => 'schon@example.org']);
+
+        Mail::shouldReceive('to->send')->andThrow(
+            new \Symfony\Component\Mailer\Exception\TransportException('535 Incorrect authentication data'),
+        );
+
+        $this->post('/newsletter', ['email' => 'schon@example.org'])
+            ->assertRedirect()
+            ->assertSessionHasErrors('email');
+
+        $this->assertNotNull($existing->fresh());
+    }
+
     public function test_the_confirmation_link_confirms(): void
     {
         Mail::fake();

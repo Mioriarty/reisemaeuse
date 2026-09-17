@@ -50,11 +50,28 @@ class NewsletterController extends Controller
             return back()->with('success', 'Fast geschafft – schau in dein Postfach.');
         }
 
+        $wasNew = ! $subscriber->exists;
+
         $subscriber->name = $validated['name'] ?? $subscriber->name;
         $subscriber->unsubscribed_at = null;
         $subscriber->save();
 
-        Mail::to($subscriber->email)->send(new ConfirmSubscription($subscriber));
+        try {
+            Mail::to($subscriber->email)->send(new ConfirmSubscription($subscriber));
+        } catch (\Throwable $e) {
+            // A broken outbound mailbox must not turn into a 500 for the
+            // visitor. A row we just created is rolled back so a later attempt
+            // starts clean; one that already existed stays untouched.
+            report($e);
+
+            if ($wasNew) {
+                $subscriber->delete();
+            }
+
+            throw ValidationException::withMessages([
+                'email' => 'Die Anmeldung hat gerade nicht geklappt. Bitte versuche es in ein paar Minuten noch einmal.',
+            ]);
+        }
 
         return back()->with('success', 'Fast geschafft – schau in dein Postfach.');
     }
