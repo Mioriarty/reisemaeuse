@@ -5,10 +5,10 @@
 --}}
 <h2>Verantwortlich</h2>
 <p>
-    [VOR- UND NACHNAME]<br>
-    [STRASSE UND HAUSNUMMER]<br>
-    [PLZ UND ORT]<br>
-    E-Mail: <a href="mailto:[E-MAIL-ADRESSE]">[E-MAIL-ADRESSE]</a>
+    Moritz Seppelt<br>
+    Herloßsohnstraße 17b<br>
+    04155 Leipzig<br>
+    E-Mail: <a href="mailto:wanderadmin@wandermaeuse.de">wanderadmin@wandermaeuse.de</a>
 </p>
 
 <h2>Grundsatz</h2>

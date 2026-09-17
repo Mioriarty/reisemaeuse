@@ -6,22 +6,22 @@
 --}}
 <h2>Angaben gemäß § 5 DDG</h2>
 <p>
-    [VOR- UND NACHNAME]<br>
-    [STRASSE UND HAUSNUMMER]<br>
-    [PLZ UND ORT]<br>
+    Moritz Seppelt<br>
+    Herloßsohnstraße 17b<br>
+    04155 Leipzig<br>
     Deutschland
 </p>
 
 <h2>Kontakt</h2>
 <p>
-    E-Mail: <a href="mailto:[E-MAIL-ADRESSE]">[E-MAIL-ADRESSE]</a>
+    E-Mail: <a href="mailto:wanderadmin@wandermaeuse.de">wanderadmin@wandermaeuse.de</a>
 </p>
 
 <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
 <p>
-    [VOR- UND NACHNAME]<br>
-    [STRASSE UND HAUSNUMMER]<br>
-    [PLZ UND ORT]
+    Moritz Seppelt<br>
+    Herloßsohnstraße 17b<br>
+    04155 Leipzig
 </p>
 
 <h2>Streitschlichtung</h2>
