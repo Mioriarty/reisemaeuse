@@ -13,9 +13,15 @@ use Throwable;
 /**
  * Sends one slice of a campaign, then re-queues itself for the next slice.
  *
- * netcup's shared SMTP throttles hard, so we deliberately trickle: a chunk per
- * job, one job per scheduler tick. A few hundred subscribers go out over a few
- * minutes instead of tripping the rate limit and failing the whole run.
+ * Note what this does *not* do. Because the job re-queues itself before it
+ * finishes, the queue is never empty mid-campaign, so `queue:work
+ * --stop-when-empty` does not stop: it keeps taking chunk after chunk until
+ * --max-time ends the run. One scheduler tick therefore sends for up to fifty
+ * seconds, not one chunk of twenty. netcup only runs the cron hourly, so a
+ * long list goes out across several hours in fifty-second bursts.
+ *
+ * The chunk size still earns its keep: it bounds how much work is repeated
+ * when a run is cut off mid-flight, since sent_at is written per subscriber.
  */
 class SendCampaignChunk implements ShouldQueue
 {

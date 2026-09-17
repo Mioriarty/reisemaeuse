@@ -26,7 +26,7 @@ Deshalb:
   netcup Git       → checkt `deploy` nach httpdocs/ aus
         │
         ▼
-  Cronjob          → merkt den neuen Commit und migriert innerhalb einer Minute
+  Cronjob          → merkt den neuen Commit und migriert beim nächsten Lauf
 ```
 
 Auf dem Webspace wird also nur noch ausgecheckt und `php artisan` ausgeführt.
@@ -97,23 +97,33 @@ php artisan wandermaeuse:admin --name="Moritz" --email="du@example.org"
 
 ## 6. Cronjob
 
-Im WCP unter *Geplante Aufgaben* **eine** Aufgabe anlegen, jede Minute:
+Im WCP unter *Geplante Aufgaben* **eine** Aufgabe anlegen, so oft der Tarif
+es zulässt:
 
 ```sh
 cd ~/httpdocs && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-Dieser eine Cronjob erledigt alles Wiederkehrende:
-
-| Was | Wie oft |
-|---|---|
-| Queue leeren (Newsletter-Versand) | jede Minute |
-| Nach einem Deploy migrieren und Caches neu bauen | jede Minute, nur bei neuem Commit |
-| Geplante Einträge veröffentlichen | alle zehn Minuten |
-| IP-Prüfwerte der Kommentare löschen | täglich |
+Dieser eine Cronjob erledigt alles Wiederkehrende: Queue leeren
+(Newsletter-Versand), nach einem Deploy migrieren und Caches neu bauen,
+geplante Einträge veröffentlichen, IP-Prüfwerte der Kommentare löschen.
 
 Shared Hosting kann keine Dauerprozesse – deshalb kein Queue-Worker, sondern
-`queue:work --stop-when-empty` im Minutentakt.
+`queue:work --stop-when-empty` bei jedem Lauf.
+
+### Warum alle Aufgaben auf `* * * * *` stehen
+
+Auf diesem Vertrag läuft der Cron nur **stündlich**, und netcup sagt nicht zu,
+zu welcher Minute. `schedule:run` führt eine Aufgabe aber nur aus, wenn die
+*aktuelle Minute* zu ihrem Cron-Ausdruck passt. Alles Engere als `* * * * *`
+kann den einen Tick deshalb dauerhaft verfehlen – `dailyAt('03:30')` hat genau
+das getan und die IP-Prüfwerte nie gelöscht, obwohl die Datenschutzerklärung
+das zusagt.
+
+Darum steht in `routes/console.php` jede Aufgabe auf `everyMinute()` und ist
+idempotent geschrieben: der Takt kommt vom Cronjob, nicht vom Ausdruck.
+`tests/Feature/ScheduleTest.php` hält das fest. Wenn der Cron später doch
+minutentaktig laufen darf, bleibt alles korrekt – es wird nur wieder pünktlich.
 
 ## 7. GitHub
 
