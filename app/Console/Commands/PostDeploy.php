@@ -46,11 +46,19 @@ class PostDeploy extends Command
         $this->call('migrate', ['--force' => true]);
 
         // A fresh checkout can wipe public/storage, so it is relinked every time.
-        if (! file_exists(public_path('storage'))) {
-            $this->call('storage:link');
-        }
+        // --relative is not cosmetic: SSH and cron run inside a chroot where this
+        // project is /wandermaeuse.de/httpdocs, while Apache sees the full path
+        // under /var/www/vhosts/. An absolute link points nowhere for Apache and
+        // it refuses to follow it (AH00037).
+        $this->linkStorage();
 
-        $this->call('optimize');
+        // Deliberately not `optimize`: config:cache freezes absolute paths, and
+        // the chroot paths are wrong for Apache, which then dies on open_basedir
+        // before it can render anything. Routes and events cache class names
+        // rather than paths, so those two are safe here.
+        $this->call('config:clear');
+        $this->call('route:cache');
+        $this->call('event:cache');
 
         if ($sha !== null) {
             Storage::disk('local')->put(self::MARKER, $sha);
@@ -59,6 +67,34 @@ class PostDeploy extends Command
         $this->info('Fertig.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Links public/storage to storage/app/public with a *relative* target.
+     *
+     * storage:link --relative would need symfony/filesystem, which this project
+     * does not ship; and its default absolute target is unusable here anyway.
+     */
+    private function linkStorage(): void
+    {
+        $link = public_path('storage');
+
+        // A dangling link reports false for file_exists but true for is_link.
+        if (file_exists($link) && ! is_link($link)) {
+            return;
+        }
+
+        if (is_link($link)) {
+            if (readlink($link) === '../storage/app/public') {
+                return;
+            }
+
+            unlink($link);
+        }
+
+        symlink('../storage/app/public', $link);
+
+        $this->info('public/storage neu verknuepft.');
     }
 
     private function currentSha(): ?string
