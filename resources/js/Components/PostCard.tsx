@@ -22,7 +22,7 @@ export default function PostCard({ post, index }: { post: PostCardType; index: n
 
                 <div className="sm:col-span-7 lg:col-span-8">
                     <div className="label-xs flex flex-wrap items-center gap-x-4 gap-y-1 text-graphite">
-                        <span aria-hidden className="font-display">
+                        <span aria-hidden className="tabular-nums">
                             {String(index + 1).padStart(2, '0')}
                         </span>
                         {post.stop && (
@@ -34,7 +34,7 @@ export default function PostCard({ post, index }: { post: PostCardType; index: n
                         {post.hasComposition && <span className="text-accent">mit Komposition</span>}
                     </div>
 
-                    <h2 className="mt-3 font-display text-2xl leading-[1.1] font-bold tracking-tight text-balance transition-colors group-hover:text-accent sm:text-3xl lg:text-4xl">
+                    <h2 className="mt-3 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium leading-[1.1] text-balance transition-colors group-hover:text-accent">
                         {post.title}
                     </h2>
 

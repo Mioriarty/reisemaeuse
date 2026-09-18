@@ -38,7 +38,14 @@ netcup Shared Hosting, kein Root, keine Dauerprozesse:
   Querscrollbalken, Tap-Ziele ≥ 44px). Die Verwaltung ist bewusst
   Desktop-first.
 - Kein `border-radius`, Hairlines statt Schatten, Farbe nur sparsam über
-  `--color-accent`. Die Fotos tragen die Farbe.
+  `--color-accent`. Die Fotos tragen die Farbe, der Hintergrund ist fast weiß.
+- Überschriften laufen in `font-display` (Bodoni Moda, eine Didone mit starkem
+  Strichkontrast). Geladen werden nur 400 und 500 – **kein `font-bold`
+  darauf**, das wäre ein vom Browser gefälschtes Fett. Alles Funktionale
+  (Navigation, Meta-Zeilen, `label-xs`) bleibt in `font-sans` (Inter).
+  Die Verwaltung benutzt `font-ui` und behält damit echte fette Schnitte.
+- Schriften werden beim Bauen heruntergeladen (`bunny(...)` in
+  `vite.config.ts`) und von der eigenen Domain ausgeliefert.
 - Newsletter: Double Opt-in ist in Deutschland Pflicht. Unbestätigte Adressen
   dürfen nie eine Kampagne bekommen (`Subscriber::scopeMailable`).
 - Vor dem Commit: `php artisan test` und `npx tsc --noEmit`.

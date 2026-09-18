@@ -9,7 +9,7 @@ export default function Legal({ title, html }: Props) {
             <Head title={title} />
 
             <div className="mx-auto max-w-3xl px-5 pt-12 pb-24 sm:px-8 sm:pt-20">
-                <h1 className="font-display text-[clamp(2rem,6vw,3.5rem)] leading-[1] font-bold tracking-tight">
+                <h1 className="font-display text-[clamp(2.25rem,6vw,4rem)] leading-[1]">
                     {title}
                 </h1>
                 <div

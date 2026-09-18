@@ -30,7 +30,7 @@ export default function CompositionPlayer({ composition }: { composition: Compos
 
                     <div className="min-w-0 flex-1 px-4 py-4 sm:px-6 sm:py-5">
                         <p className="label-xs text-graphite">Komposition</p>
-                        <h2 className="mt-1 font-display text-lg leading-tight font-bold text-balance sm:text-xl">
+                        <h2 className="mt-1 font-display text-2xl font-medium leading-[1.15] text-balance sm:text-[1.75rem]">
                             {composition.title}
                         </h2>
                         {composition.description && (
@@ -42,7 +42,7 @@ export default function CompositionPlayer({ composition }: { composition: Compos
                 </div>
 
                 <div className="hairline-t flex items-center gap-3 px-4 py-3 sm:px-6">
-                    <span className="font-display text-xs tabular-nums text-graphite">
+                    <span className="text-xs tabular-nums text-graphite">
                         {formatDuration(elapsed)}
                     </span>
                     <input
@@ -62,7 +62,7 @@ export default function CompositionPlayer({ composition }: { composition: Compos
                             backgroundRepeat: 'no-repeat',
                         }}
                     />
-                    <span className="font-display text-xs tabular-nums text-graphite">
+                    <span className="text-xs tabular-nums text-graphite">
                         {formatDuration(total)}
                     </span>
                 </div>

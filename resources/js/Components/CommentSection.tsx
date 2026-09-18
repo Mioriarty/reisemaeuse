@@ -37,7 +37,7 @@ export default function CommentSection({ postSlug, comments }: Props) {
                     {comments.map((comment) => (
                         <li key={comment.id} className="grid gap-2 sm:grid-cols-12 sm:gap-6">
                             <div className="sm:col-span-3">
-                                <p className="font-display text-sm font-bold">{comment.authorName}</p>
+                                <p className="text-sm font-semibold">{comment.authorName}</p>
                                 <p className="mt-0.5 text-xs text-graphite">
                                     {formatShortDate(comment.createdAt)}
                                 </p>
@@ -52,7 +52,7 @@ export default function CommentSection({ postSlug, comments }: Props) {
 
             <form onSubmit={submit} className="mt-12 border border-ink">
                 <div className="hairline-b px-5 py-4 sm:px-6">
-                    <h3 className="font-display text-base font-bold">Schreib uns etwas</h3>
+                    <h3 className="font-display text-2xl font-medium leading-none">Schreib uns etwas</h3>
                     <p className="mt-1 text-sm text-graphite">
                         Dein Kommentar erscheint sofort. Die E-Mail-Adresse ist freiwillig und wird nie
                         veröffentlicht.

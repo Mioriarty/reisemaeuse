@@ -13,7 +13,7 @@ export default defineConfig({
             // Fonts are downloaded at build time and served from our own origin,
             // so the site makes no third-party requests for typography.
             fonts: [
-                bunny('Space Grotesk', { weights: [500, 700] }),
+                bunny('Bodoni Moda', { weights: [400, 500], styles: ['normal', 'italic'] }),
                 bunny('Inter', { weights: [400, 500, 600] }),
             ],
         }),

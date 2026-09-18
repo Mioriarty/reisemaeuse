@@ -19,7 +19,7 @@ export default function Reise({ stops }: { stops: StopWithPosts[] }) {
 
             <div className="mx-auto max-w-6xl px-5 pt-12 sm:px-8 sm:pt-20">
                 <p className="label-xs text-graphite">{stops.length} Stationen</p>
-                <h1 className="mt-4 font-display text-[clamp(2.25rem,7vw,4.5rem)] leading-[0.95] font-bold tracking-tight">
+                <h1 className="mt-4 font-display text-[clamp(2.5rem,8vw,5.5rem)] leading-[1]">
                     Die Route
                 </h1>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-graphite">
@@ -48,13 +48,13 @@ export default function Reise({ stops }: { stops: StopWithPosts[] }) {
                         className="hairline-t grid gap-3 py-7 sm:grid-cols-12 sm:gap-8"
                     >
                         <div className="label-xs flex gap-4 text-graphite sm:col-span-3 sm:block">
-                            <span className="font-display">{String(i + 1).padStart(2, '0')}</span>
+                            <span className="tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                             <span className="sm:mt-1 sm:block">{formatDate(stop.arrivedOn)}</span>
                         </div>
                         <div className="sm:col-span-9">
-                            <h2 className="font-display text-xl font-bold tracking-tight sm:text-2xl">
+                            <h2 className="font-display text-2xl font-medium leading-tight sm:text-3xl">
                                 {stop.name}
-                                <span className="ml-3 text-base font-medium text-graphite">{stop.country}</span>
+                                <span className="ml-3 font-sans text-sm font-medium text-graphite">{stop.country}</span>
                             </h2>
                             {stop.note && (
                                 <p className="mt-2 max-w-prose leading-relaxed text-graphite">{stop.note}</p>

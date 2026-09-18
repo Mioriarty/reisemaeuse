@@ -7,7 +7,7 @@ export default function Quote({ block }: { block: BlockProps }) {
     return (
         <div className="mx-auto max-w-4xl px-5 sm:px-8">
             <blockquote className="hairline-t hairline-b py-8 sm:py-12">
-                <p className="font-display text-2xl leading-[1.15] font-medium tracking-tight text-balance sm:text-3xl md:text-4xl">
+                <p className="font-display text-[clamp(1.75rem,4.5vw,3rem)] leading-[1.1] text-balance italic">
                     {text}
                 </p>
                 {attribution && <footer className="label-xs mt-6 text-graphite">{attribution}</footer>}

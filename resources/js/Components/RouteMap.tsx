@@ -223,8 +223,8 @@ export default function RouteMap({ stops, focusStopId = null, onSelect, variant 
                                         x={x + size}
                                         y={y + 4 / k}
                                         fontSize={(variant === 'compact' ? 15 : 16) / k}
-                                        fontFamily="var(--font-display)"
-                                        fontWeight={isFocus ? 700 : 500}
+                                        fontFamily="var(--font-sans)"
+                                        fontWeight={isFocus ? 600 : 500}
                                         fill="var(--color-ink)"
                                         paintOrder="stroke"
                                         stroke="var(--color-paper-dim)"
@@ -269,7 +269,7 @@ function MapButton({
             type="button"
             aria-label={label}
             onClick={onClick}
-            className="flex h-11 w-11 items-center justify-center border-t border-l border-hairline bg-paper font-display text-base text-ink transition-colors hover:bg-ink hover:text-paper"
+            className="flex h-11 w-11 items-center justify-center border-t border-l border-hairline bg-paper text-base text-ink transition-colors hover:bg-ink hover:text-paper"
         >
             {children}
         </button>

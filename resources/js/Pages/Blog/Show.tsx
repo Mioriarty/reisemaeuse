@@ -41,7 +41,7 @@ export default function BlogShow({ post, blocks, composition, comments, stops, n
                         <span>{formatDate(post.publishedAt)}</span>
                         <span>{post.readingMinutes} Min. Lesezeit</span>
                     </div>
-                    <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.25rem,7vw,4.5rem)] leading-[0.95] font-bold tracking-tight text-balance">
+                    <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.5rem,8vw,5.5rem)] leading-[1] text-balance">
                         {post.title}
                     </h1>
                     {post.excerpt && (
@@ -105,7 +105,7 @@ function NeighbourLink({ post, direction }: { post: PostCard | null; direction: 
             }`}
         >
             <span className="label-xs text-graphite">{label}</span>
-            <span className="mt-2 block font-display text-lg leading-tight font-bold text-balance group-hover:text-accent">
+            <span className="mt-2 block font-display text-2xl font-medium leading-[1.15] text-balance group-hover:text-accent">
                 {post.title}
             </span>
         </Link>

@@ -19,13 +19,18 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
 
     return (
         <div className="flex min-h-screen flex-col">
-            <header className="sticky top-0 z-50 border-b border-ink bg-paper/95 backdrop-blur-sm">
-                <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
-                    <Link href="/" className="font-display text-lg font-bold tracking-tight">
+            {/*
+              Keine Trennlinie unter der Kopfleiste: auf der Startseite soll das
+              Titelbild ohne Kante anschliessen. Die Leiste traegt ihren eigenen
+              Hintergrund, damit der Text darunter beim Scrollen lesbar bleibt.
+            */}
+            <header className="sticky top-0 z-50 bg-paper/90 backdrop-blur-sm">
+                <div className="mx-auto flex h-14 max-w-[100rem] items-center justify-between px-5 sm:h-18 sm:px-8">
+                    <Link href="/" className="flex min-h-11 items-center font-display text-2xl font-medium leading-none sm:text-[1.75rem]">
                         Wandermäuse
                     </Link>
 
-                    <nav className="hidden gap-8 sm:flex" aria-label="Hauptnavigation">
+                    <nav className="hidden gap-9 sm:flex" aria-label="Hauptnavigation">
                         {NAV.map((item) => (
                             <Link
                                 key={item.href}
@@ -51,12 +56,12 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                 </div>
 
                 {menuOpen && (
-                    <nav id="mobile-nav" className="border-t border-hairline sm:hidden" aria-label="Hauptnavigation">
+                    <nav id="mobile-nav" className="hairline-t bg-paper sm:hidden" aria-label="Hauptnavigation">
                         {NAV.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="label-xs block border-b border-hairline px-5 py-4 last:border-b-0"
+                                className="label-xs hairline-b flex min-h-14 items-center px-5 last:border-b-0"
                             >
                                 {item.label}
                             </Link>
@@ -66,12 +71,12 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             </header>
 
             {flash?.success && (
-                <p role="status" className="border-b border-ink bg-ink px-5 py-3 text-center text-sm text-paper sm:px-8">
+                <p role="status" className="bg-ink px-5 py-3 text-center text-sm text-paper sm:px-8">
                     {flash.success}
                 </p>
             )}
             {flash?.error && (
-                <p role="alert" className="border-b border-accent bg-accent px-5 py-3 text-center text-sm text-paper sm:px-8">
+                <p role="alert" className="bg-accent px-5 py-3 text-center text-sm text-paper sm:px-8">
                     {flash.error}
                 </p>
             )}
@@ -80,24 +85,33 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
 
             <MiniPlayer />
 
-            <footer className="mt-20 border-t border-ink">
-                <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
-                    <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
+            <footer className="hairline-t mt-24 sm:mt-32">
+                <div className="mx-auto max-w-[100rem] px-5 py-12 sm:px-8 sm:py-16">
+                    <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
                         <div>
-                            <p className="font-display text-lg font-bold tracking-tight">Wandermäuse</p>
-                            <p className="mt-2 max-w-xs text-sm leading-relaxed text-graphite">
+                            <p className="font-display text-3xl leading-none sm:text-4xl">Wandermäuse</p>
+                            <p className="mt-4 max-w-xs text-sm leading-relaxed text-graphite">
                                 Ein Reisetagebuch aus Südamerika – mit Bildern, Karte und zu jedem Eintrag
                                 einer kleinen Komposition.
                             </p>
                         </div>
-                        <nav className="flex flex-col gap-3" aria-label="Rechtliches">
-                            <Link href="/impressum" className="label-xs text-graphite hover:text-ink">
+                        <nav className="-my-3 flex flex-col" aria-label="Rechtliches">
+                            <Link
+                                href="/impressum"
+                                className="label-xs flex min-h-11 items-center text-graphite hover:text-ink"
+                            >
                                 Impressum
                             </Link>
-                            <Link href="/datenschutz" className="label-xs text-graphite hover:text-ink">
+                            <Link
+                                href="/datenschutz"
+                                className="label-xs flex min-h-11 items-center text-graphite hover:text-ink"
+                            >
                                 Datenschutz
                             </Link>
-                            <a href="/feed.xml" className="label-xs text-graphite hover:text-ink">
+                            <a
+                                href="/feed.xml"
+                                className="label-xs flex min-h-11 items-center text-graphite hover:text-ink"
+                            >
                                 RSS
                             </a>
                         </nav>
