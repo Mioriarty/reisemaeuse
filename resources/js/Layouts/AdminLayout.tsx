@@ -4,6 +4,7 @@ import type { SharedProps } from '@/types';
 
 const NAV = [
     { href: '/admin', label: 'Übersicht', exact: true },
+    { href: '/admin/startseite', label: 'Startseite' },
     { href: '/admin/eintraege', label: 'Einträge' },
     { href: '/admin/bilder', label: 'Bilder' },
     { href: '/admin/stationen', label: 'Stationen' },

@@ -16,6 +16,7 @@ class AdminAccessTest extends TestCase
     {
         return [
             ['/admin'],
+            ['/admin/startseite'],
             ['/admin/eintraege'],
             ['/admin/eintraege/neu'],
             ['/admin/bilder'],

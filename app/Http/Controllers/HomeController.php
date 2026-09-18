@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Stop;
+use App\Support\HomeHero;
 use App\Support\Seo;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,13 +21,18 @@ class HomeController extends Controller
 
         $stops = Stop::orderBy('position')->get();
 
+        // Das Titelbild wird in der Verwaltung unter "Startseite" gewaehlt;
+        // ohne Wahl ist es das Aufmacherfoto des juengsten Eintrags.
+        $hero = HomeHero::current();
+
         Seo::set(
             title: 'Wandermäuse',
             description: 'Ein Reiseblog über unsere Reise durch Süd- und Mittelamerika – mit Karte, Bildern und einer kleinen Komposition zu jedem Eintrag.',
-            image: $posts->first()?->coverMedia?->url(),
+            image: $hero?->url() ?? $posts->first()?->coverMedia?->url(),
         );
 
         return Inertia::render('Home', [
+            'hero' => $hero?->toImageProps(),
             'posts' => $posts->map->toCardProps()->all(),
             'stops' => $stops->map->toMapProps()->all(),
             'intro' => [

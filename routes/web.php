@@ -46,6 +46,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/', Admin\DashboardController::class)->name('dashboard');
 
+        Route::get('startseite', [Admin\HomeSettingsController::class, 'edit'])->name('home.edit');
+        Route::put('startseite', [Admin\HomeSettingsController::class, 'update'])->name('home.update');
+
         Route::get('eintraege', [Admin\PostController::class, 'index'])->name('posts.index');
         Route::get('eintraege/neu', [Admin\PostController::class, 'create'])->name('posts.create');
         Route::post('eintraege', [Admin\PostController::class, 'store'])->name('posts.store');

@@ -4,9 +4,11 @@ import NewsletterForm from '@/Components/NewsletterForm';
 import PostRail from '@/Components/PostRail';
 import RouteMap from '@/Components/RouteMap';
 import PublicLayout from '@/Layouts/PublicLayout';
-import type { PostCard as PostCardType, StopProps } from '@/types';
+import type { ImageProps, PostCard as PostCardType, StopProps } from '@/types';
 
 type Props = {
+    /** In der Verwaltung gewaehlt, sonst das neueste Aufmacherfoto. */
+    hero: ImageProps | null;
     posts: PostCardType[];
     stops: StopProps[];
     intro: { kilometres: number | null; countries: number; stopCount: number };
@@ -26,10 +28,7 @@ const SCRIM = [
         ' rgba(0,0,0,0.1) 65%, rgba(0,0,0,0.45) 100%)',
 ].join(', ');
 
-export default function Home({ posts, stops, intro }: Props) {
-    // Das Titelbild ist das Aufmacherfoto des juengsten Eintrags, der eines hat.
-    const cover = posts.find((post) => post.cover)?.cover ?? null;
-
+export default function Home({ hero, posts, stops, intro }: Props) {
     return (
         <PublicLayout>
             <Head title="" />
@@ -38,8 +37,8 @@ export default function Home({ posts, stops, intro }: Props) {
                 className="relative isolate flex h-[calc(100svh-3.5rem)] flex-col overflow-hidden sm:h-[calc(100svh-4.5rem)]"
                 aria-label="Wandermäuse"
             >
-                {cover ? (
-                    <Frame image={cover} fill priority sizes="100vw" />
+                {hero ? (
+                    <Frame image={hero} fill priority sizes="100vw" />
                 ) : (
                     <div className="absolute inset-0 bg-paper-deep" />
                 )}

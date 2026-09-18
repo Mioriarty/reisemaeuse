@@ -16,6 +16,11 @@ Reiseblog auf Laravel 13 + Inertia 3 + React 19 + TypeScript + Tailwind 4.
   Komponente in `resources/js/Components/Blocks/`. Ein neues Muster heißt: ein
   Case im Enum, eine Komponente, ein Eintrag in `Blocks/index.tsx` und ein Fall
   in `BlockEditor.tsx` – sonst nichts.
+- Einzelne Stellschrauben der Seite liegen als Schluessel und Wert in der
+  Tabelle `settings` (`App\Models\Setting`). Bisher steht dort nur das
+  Titelbild der Startseite, waehlbar unter `/admin/startseite`. Welches Bild
+  die Startseite zeigt, entscheidet `App\Support\HomeHero` – eine Stelle fuer
+  beide Seiten, damit Verwaltung und Startseite nicht auseinanderlaufen.
 - Die Karte ist selbst gerendertes SVG (`RouteMap.tsx`, d3-geo, GeoJSON in
   `resources/js/lib/americas.geo.json` – Mexiko, Mittelamerika, die Karibik
   und Suedamerika; die USA und Kanada bewusst nicht, die Reise beginnt in
