@@ -33,7 +33,7 @@ export default function Dashboard({ stats, recentPosts, recentComments }: Props)
                 {STAT_LABELS.map(([key, label]) => (
                     <div key={key} className="bg-paper px-4 py-5">
                         <dt className="label-xs text-graphite">{label}</dt>
-                        <dd className="mt-2 font-display text-3xl font-bold tabular-nums">{stats[key] ?? 0}</dd>
+                        <dd className="mt-2 font-ui text-3xl font-bold tabular-nums">{stats[key] ?? 0}</dd>
                     </div>
                 ))}
             </dl>

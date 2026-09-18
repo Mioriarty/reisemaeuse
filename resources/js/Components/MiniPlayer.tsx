@@ -34,9 +34,9 @@ export default function MiniPlayer() {
                 </button>
                 <div className="min-w-0 flex-1">
                     <p className="label-xs truncate text-graphite">Läuft gerade</p>
-                    <p className="truncate font-display text-sm font-medium">{current.title}</p>
+                    <p className="truncate font-display text-lg font-medium leading-tight">{current.title}</p>
                 </div>
-                <span className="hidden font-display text-xs tabular-nums text-graphite sm:inline">
+                <span className="hidden text-xs tabular-nums text-graphite sm:inline">
                     {formatDuration(position)} / {formatDuration(total)}
                 </span>
                 <button

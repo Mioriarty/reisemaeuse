@@ -7,6 +7,12 @@ type Props = {
     priority?: boolean;
     /** Crop to a fixed ratio instead of honouring the photo's own. */
     ratio?: number;
+    /**
+     * Fill the nearest positioned ancestor instead of bringing an own box.
+     * This is how the title photograph covers the whole opening screen, whose
+     * height comes from the viewport rather than from the photo.
+     */
+    fill?: boolean;
 };
 
 /**
@@ -16,13 +22,28 @@ type Props = {
  * dominant colour before the file arrives, so nothing on the page jumps while
  * a long entry loads over a slow connection.
  */
-export default function Frame({ image, sizes = '100vw', className = '', priority = false, ratio }: Props) {
+export default function Frame({
+    image,
+    sizes = '100vw',
+    className = '',
+    priority = false,
+    ratio,
+    fill = false,
+}: Props) {
     const aspect = ratio ?? image.aspectRatio ?? 1;
 
     return (
         <div
-            className={`relative w-full overflow-hidden ${className}`}
-            style={{ aspectRatio: String(aspect), backgroundColor: image.dominantColor }}
+            className={
+                fill
+                    ? `absolute inset-0 overflow-hidden ${className}`
+                    : `relative w-full overflow-hidden ${className}`
+            }
+            style={
+                fill
+                    ? { backgroundColor: image.dominantColor }
+                    : { aspectRatio: String(aspect), backgroundColor: image.dominantColor }
+            }
         >
             <picture>
                 <source type="image/webp" srcSet={image.srcset} sizes={sizes} />

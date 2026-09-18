@@ -26,7 +26,7 @@ export default function AdminLayout({ children, title, actions }: Props) {
             <header className="border-b border-ink bg-paper">
                 <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-3">
                     <div className="flex items-center gap-8">
-                        <Link href="/admin" className="font-display text-base font-bold tracking-tight">
+                        <Link href="/admin" className="font-ui text-base font-bold tracking-tight">
                             Wandermäuse<span className="text-graphite"> / Verwaltung</span>
                         </Link>
                         <nav className="flex flex-wrap gap-6" aria-label="Verwaltung">
@@ -73,7 +73,7 @@ export default function AdminLayout({ children, title, actions }: Props) {
 
             <div className="px-6 py-8">
                 <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-                    <h1 className="font-display text-3xl font-bold tracking-tight">{title}</h1>
+                    <h1 className="font-ui text-3xl font-bold tracking-tight">{title}</h1>
                     {actions && <div className="flex items-center gap-3">{actions}</div>}
                 </div>
                 {children}

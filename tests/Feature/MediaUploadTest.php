@@ -71,6 +71,40 @@ class MediaUploadTest extends TestCase
         $this->assertMatchesRegularExpression('/^#[0-9a-f]{6}$/i', $media->dominant_color);
     }
 
+    /**
+     * Die Farbe muss aus dem Bild kommen. Das Format allein reicht als Probe
+     * nicht: die Ausweichfarbe sieht genauso aus, und genau daran ist ein
+     * kaputter Analyzer einmal unbemerkt vorbeigekommen.
+     */
+    public function test_the_dominant_colour_comes_from_the_image(): void
+    {
+        $media = app(MediaService::class)->store($this->solidImage(0xC0, 0x39, 0x2B));
+
+        $this->assertNotSame('#e6e4de', strtolower($media->dominant_color));
+
+        [$red, $green, $blue] = sscanf($media->dominant_color, '#%02x%02x%02x');
+
+        // JPEG verschiebt die Farbe ein wenig, die Rangfolge bleibt aber.
+        $this->assertGreaterThan($green, $red);
+        $this->assertGreaterThan($blue, $red);
+        $this->assertGreaterThan(0x90, $red);
+    }
+
+    /**
+     * Ein einfarbiges JPEG mit bekannter Farbe.
+     */
+    private function solidImage(int $red, int $green, int $blue): UploadedFile
+    {
+        $gd = imagecreatetruecolor(600, 400);
+        imagefill($gd, 0, 0, imagecolorallocate($gd, $red, $green, $blue));
+
+        $path = tempnam(sys_get_temp_dir(), 'seed').'.jpg';
+        imagejpeg($gd, $path, 100);
+        imagedestroy($gd);
+
+        return new UploadedFile($path, 'einfarbig.jpg', 'image/jpeg', null, true);
+    }
+
     public function test_deleting_removes_the_record_and_every_file(): void
     {
         $service = app(MediaService::class);

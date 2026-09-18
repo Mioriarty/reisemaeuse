@@ -22,7 +22,7 @@ class HomeController extends Controller
 
         Seo::set(
             title: 'Wandermäuse',
-            description: 'Ein Reiseblog über unsere Reise durch Südamerika – mit Karte, Bildern und einer kleinen Komposition zu jedem Eintrag.',
+            description: 'Ein Reiseblog über unsere Reise durch Süd- und Mittelamerika – mit Karte, Bildern und einer kleinen Komposition zu jedem Eintrag.',
             image: $posts->first()?->coverMedia?->url(),
         );
 

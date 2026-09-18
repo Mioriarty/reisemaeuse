@@ -12,7 +12,7 @@ export default function NewsletterStatus({ heading, message, ok }: Props) {
                 <p className="label-xs" style={{ color: ok ? undefined : 'var(--color-accent)' }}>
                     Newsletter
                 </p>
-                <h1 className="mt-4 font-display text-[clamp(2rem,6vw,3.5rem)] leading-[1] font-bold tracking-tight">
+                <h1 className="mt-4 font-display text-[clamp(2.25rem,6vw,4rem)] leading-[1]">
                     {heading}
                 </h1>
                 <p className="mt-6 text-lg leading-relaxed text-graphite">{message}</p>

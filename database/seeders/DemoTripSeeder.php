@@ -16,8 +16,8 @@ use Illuminate\Support\Str;
 /**
  * A plausible trip so every surface has realistic content while building.
  *
- * The images are generated placeholders rather than real photographs - enough
- * to see the patterns, the srcset and the colour placeholders behave.
+ * Die Bilder sind echte Landschaftsfotos (siehe DemoPhotoLibrary); nur wenn
+ * die nicht erreichbar sind, treten die erzeugten Farbflaechen an ihre Stelle.
  */
 class DemoTripSeeder extends Seeder
 {
@@ -32,6 +32,7 @@ class DemoTripSeeder extends Seeder
             '2026-02-14 09:00',
             'Ankommen, Zeitumstellung, der erste Nebel über der Küste – und ein Klavier in einer Bar in Barranco.',
             $media,
+            0,
         );
 
         Composition::create([
@@ -48,6 +49,7 @@ class DemoTripSeeder extends Seeder
             '2026-03-02 18:30',
             'Zwölf Stunden Bus, 3400 Meter Höhe und plötzlich sehr viel dünnere Luft.',
             $media,
+            3,
         );
 
         Composition::create([
@@ -64,6 +66,7 @@ class DemoTripSeeder extends Seeder
             '2026-03-20 12:00',
             'Drei Tage über den größten Salzsee der Welt – und ein Horizont, der einfach nicht aufhört.',
             $media,
+            6,
         );
 
         foreach ([$lima, $cusco, $uyuni] as $post) {
@@ -133,50 +136,83 @@ class DemoTripSeeder extends Seeder
      */
     private function seedMedia(): array
     {
-        $disk = Storage::disk('public');
+        $photos = app(DemoPhotoLibrary::class);
         $media = [];
+        $fetched = 0;
 
-        $palette = [
-            ['#8c7a63', 4 / 3], ['#5d6b6a', 3 / 2], ['#a8886b', 1 / 1],
-            ['#6b7f93', 4 / 5], ['#9c8f7a', 3 / 2], ['#7b6a5d', 4 / 3],
-            ['#93826e', 1 / 1], ['#607080', 4 / 5], ['#8a7f6d', 3 / 2],
-        ];
+        foreach (DemoPhotoLibrary::PHOTOS as $i => $photo) {
+            $real = $photos->fetch($photo);
 
-        foreach ($palette as $i => [$color, $ratio]) {
-            $width = 2400;
-            $height = (int) round($width / $ratio);
-            $stem = 'demo/platzhalter-'.($i + 1);
+            if ($real !== null) {
+                $media[] = $real;
+                $fetched++;
 
-            $variants = ['webp' => [], 'jpeg' => []];
-
-            foreach ([480, 960, 1600, 2400] as $w) {
-                $h = (int) round($w / $ratio);
-                $svg = $this->placeholderSvg($w, $h, $color, $i + 1);
-                $disk->put("{$stem}-{$w}.svg", $svg);
-                // The demo files are SVG; the srcset keys still describe real
-                // widths so the layout behaves exactly as it will with photos.
-                $variants['webp'][$w] = "{$stem}-{$w}.svg";
-                $variants['jpeg'][$w] = "{$stem}-{$w}.svg";
+                continue;
             }
 
-            $disk->put("{$stem}.svg", $this->placeholderSvg($width, $height, $color, $i + 1));
+            $media[] = $this->placeholderMedia($i);
+        }
 
-            $media[] = Media::create([
-                'path' => "{$stem}.svg",
-                'original_name' => 'platzhalter-'.($i + 1).'.svg',
-                'mime' => 'image/svg+xml',
-                'size' => 1024,
-                'width' => $width,
-                'height' => $height,
-                'aspect_ratio' => round($ratio, 4),
-                'dominant_color' => $color,
-                'alt' => 'Platzhalterbild '.($i + 1),
-                'caption' => null,
-                'variants' => $variants,
-            ]);
+        $total = count(DemoPhotoLibrary::PHOTOS);
+
+        if ($fetched < $total) {
+            $this->command->warn(
+                "Nur {$fetched} von {$total} Fotos geladen - der Rest sind Platzhalter."
+                .' Mit Netz noch einmal seeden, dann liegen sie im Cache.'
+            );
         }
 
         return $media;
+    }
+
+    /**
+     * Eine eingefaerbte Flaeche fuer den Fall, dass Commons nicht erreichbar
+     * ist. Die Seitenverhaeltnisse sind gemischt, damit die Muster trotzdem
+     * etwas zu tun bekommen.
+     */
+    private function placeholderMedia(int $i): Media
+    {
+        $disk = Storage::disk('public');
+
+        $palette = [
+            ['#8c7a63', 3 / 2], ['#5d6b6a', 3 / 4], ['#a8886b', 3 / 4],
+            ['#6b7f93', 4 / 3], ['#9c8f7a', 2 / 1], ['#7b6a5d', 3 / 4],
+            ['#93826e', 3 / 2], ['#607080', 16 / 9], ['#8a7f6d', 3 / 2],
+            ['#7d6f5e', 3 / 2],
+        ];
+
+        [$color, $ratio] = $palette[$i % count($palette)];
+
+        $width = 2400;
+        $height = (int) round($width / $ratio);
+        $stem = 'demo/platzhalter-'.($i + 1);
+
+        $variants = ['webp' => [], 'jpeg' => []];
+
+        foreach ([480, 960, 1600, 2400] as $w) {
+            $h = (int) round($w / $ratio);
+            $disk->put("{$stem}-{$w}.svg", $this->placeholderSvg($w, $h, $color, $i + 1));
+            // The demo files are SVG; the srcset keys still describe real
+            // widths so the layout behaves exactly as it will with photos.
+            $variants['webp'][$w] = "{$stem}-{$w}.svg";
+            $variants['jpeg'][$w] = "{$stem}-{$w}.svg";
+        }
+
+        $disk->put("{$stem}.svg", $this->placeholderSvg($width, $height, $color, $i + 1));
+
+        return Media::create([
+            'path' => "{$stem}.svg",
+            'original_name' => 'platzhalter-'.($i + 1).'.svg',
+            'mime' => 'image/svg+xml',
+            'size' => 1024,
+            'width' => $width,
+            'height' => $height,
+            'aspect_ratio' => round($ratio, 4),
+            'dominant_color' => $color,
+            'alt' => 'Platzhalterbild '.($i + 1),
+            'caption' => null,
+            'variants' => $variants,
+        ]);
     }
 
     /**
@@ -259,15 +295,19 @@ class DemoTripSeeder extends Seeder
 
     /**
      * @param  list<Media>  $media
+     * @param  int  $offset  Startpunkt im Bildvorrat, damit die drei Eintraege
+     *                       nicht alle dasselbe Titelbild tragen.
      */
-    private function post(string $title, Stop $stop, string $publishedAt, string $excerpt, array $media): Post
+    private function post(string $title, Stop $stop, string $publishedAt, string $excerpt, array $media, int $offset = 0): Post
     {
+        $pick = fn (int $i): Media => $media[($offset + $i) % count($media)];
+
         $post = Post::create([
             'title' => $title,
             'slug' => Str::slug($title),
             'excerpt' => $excerpt,
             'stop_id' => $stop->id,
-            'cover_media_id' => $media[0]->id,
+            'cover_media_id' => $pick(0)->id,
             'status' => Post::STATUS_PUBLISHED,
             'published_at' => $publishedAt,
             'reading_minutes' => 4,
@@ -277,12 +317,12 @@ class DemoTripSeeder extends Seeder
         // whole renderer rather than only the easy cases.
         $blocks = [
             [BlockType::Text, ['html' => '<p>Wir sind angekommen. Der Bus hat sechs Stunden länger gebraucht als angekündigt, und trotzdem war es das gute Sechs-Stunden-Länger: die Straße lief zuletzt an einem Fluss entlang, und irgendwann hörte das Grün auf.</p><p>Auf dem Markt haben wir erst einmal <strong>alles</strong> gekauft, was wir nicht kannten.</p>']],
-            [BlockType::ImageFull, ['media_id' => $media[1]->id, 'caption' => 'Der erste Morgen, kurz nach sechs.', 'bleed' => true]],
+            [BlockType::ImageFull, ['media_id' => $pick(1)->id, 'caption' => 'Der erste Morgen, kurz nach sechs.', 'bleed' => true]],
             [BlockType::Heading, ['text' => 'Was uns niemand gesagt hatte', 'label' => 'Kapitel zwei']],
-            [BlockType::ImageText, ['media_id' => $media[2]->id, 'html' => '<p>Dass es nachts so kalt wird, zum Beispiel. Und dass man die ersten zwei Tage einfach nur sitzt und atmet.</p><p>Dafür ist das Licht am Nachmittag so, dass man ständig stehen bleibt.</p>', 'variant' => 'left', 'caption' => 'Nachmittagslicht.']],
-            [BlockType::ImagePair, ['left_media_id' => $media[3]->id, 'right_media_id' => $media[4]->id, 'caption' => 'Links der Weg hinauf, rechts der Blick zurück.']],
+            [BlockType::ImageText, ['media_id' => $pick(2)->id, 'html' => '<p>Dass es nachts so kalt wird, zum Beispiel. Und dass man die ersten zwei Tage einfach nur sitzt und atmet.</p><p>Dafür ist das Licht am Nachmittag so, dass man ständig stehen bleibt.</p>', 'variant' => 'left', 'caption' => 'Nachmittagslicht.']],
+            [BlockType::ImagePair, ['left_media_id' => $pick(3)->id, 'right_media_id' => $pick(4)->id, 'caption' => 'Links der Weg hinauf, rechts der Blick zurück.']],
             [BlockType::Quote, ['text' => 'Man reist nicht, um anzukommen, sondern um zu reisen.', 'attribution' => 'Goethe, angeblich']],
-            [BlockType::Gallery, ['media_ids' => [$media[5]->id, $media[6]->id, $media[7]->id], 'caption' => 'Drei Tage in Bildern.']],
+            [BlockType::Gallery, ['media_ids' => [$pick(5)->id, $pick(6)->id, $pick(7)->id], 'caption' => 'Drei Tage in Bildern.']],
             [BlockType::Divider, ['glyph' => '✳']],
             [BlockType::Text, ['html' => '<p>Morgen geht es weiter. Das Stück oben ist hier entstanden, abends auf der Dachterrasse, mit einem sehr verstimmten Klavier.</p>']],
         ];

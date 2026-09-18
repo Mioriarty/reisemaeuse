@@ -18,7 +18,7 @@ export default function NewsletterForm({ compact = false }: { compact?: boolean 
     if (wasSuccessful) {
         return (
             <div className="border border-ink p-6" role="status">
-                <p className="font-display text-base font-bold">Fast geschafft.</p>
+                <p className="font-display text-2xl font-medium leading-none">Fast geschafft.</p>
                 <p className="mt-2 text-sm leading-relaxed text-graphite">
                     Wir haben dir eine E-Mail geschickt. Bestätige darin einmal kurz deine Adresse – dann
                     bist du dabei.
@@ -31,8 +31,8 @@ export default function NewsletterForm({ compact = false }: { compact?: boolean 
         <form onSubmit={submit} className="border border-ink">
             {!compact && (
                 <div className="hairline-b px-5 py-4 sm:px-6">
-                    <h2 className="font-display text-base font-bold">Neue Einträge per E-Mail</h2>
-                    <p className="mt-1 text-sm leading-relaxed text-graphite">
+                    <h2 className="font-display text-2xl font-medium leading-none">Neue Einträge per E-Mail</h2>
+                    <p className="mt-2 text-sm leading-relaxed text-graphite">
                         Keine Werbung, kein Tracking – nur eine Nachricht, wenn es etwas Neues zu lesen und
                         zu hören gibt.
                     </p>

@@ -9,7 +9,7 @@ export default function NewsletterIndex() {
 
             <div className="mx-auto max-w-2xl px-5 pt-12 pb-20 sm:px-8 sm:pt-20">
                 <p className="label-xs text-graphite">Newsletter</p>
-                <h1 className="mt-4 font-display text-[clamp(2.25rem,7vw,4rem)] leading-[0.95] font-bold tracking-tight">
+                <h1 className="mt-4 font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[1]">
                     Nichts verpassen
                 </h1>
                 <p className="mt-6 text-lg leading-relaxed text-graphite">

@@ -14,7 +14,7 @@ export default function BlogIndex({ groups, total }: { groups: Group[]; total: n
 
             <div className="mx-auto max-w-6xl px-5 pt-12 pb-16 sm:px-8 sm:pt-20">
                 <p className="label-xs text-graphite">{total} Einträge</p>
-                <h1 className="mt-4 font-display text-[clamp(2.25rem,7vw,4.5rem)] leading-[0.95] font-bold tracking-tight">
+                <h1 className="mt-4 font-display text-[clamp(2.5rem,8vw,5.5rem)] leading-[1]">
                     Alle Einträge
                 </h1>
             </div>
@@ -26,7 +26,7 @@ export default function BlogIndex({ groups, total }: { groups: Group[]; total: n
 
                 {groups.map((group) => (
                     <section key={group.country} className="mb-16" aria-label={group.country}>
-                        <h2 className="label-xs sticky top-[57px] z-10 bg-paper py-3 text-graphite">
+                        <h2 className="label-xs sticky top-14 z-10 bg-paper/95 py-3 backdrop-blur-sm sm:top-18 text-graphite">
                             {group.country}
                         </h2>
                         {group.posts.map((post) => {
