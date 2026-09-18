@@ -8,7 +8,7 @@
     Moritz Seppelt<br>
     Herloßsohnstraße 17b<br>
     04155 Leipzig<br>
-    E-Mail: <a href="mailto:wanderadmin@wandermaeuse.de">wanderadmin@wandermaeuse.de</a>
+    E-Mail: <a href="mailto:adminmaus@wandermaeuse.de">adminmaus@wandermaeuse.de</a>
 </p>
 
 <h2>Grundsatz</h2>
