@@ -19,6 +19,7 @@ class Seo
         ?string $image = null,
         string $type = 'website',
         ?string $publishedAt = null,
+        bool $noindex = false,
     ): void {
         /** @var Request $request */
         $request = request();
@@ -30,6 +31,9 @@ class Seo
             'type' => $type,
             'publishedAt' => $publishedAt,
             'url' => $request->fullUrl(),
+            // array_filter wirft das false gleich wieder raus - genau richtig,
+            // gefragt wird ohnehin nur, ob der Schluessel gesetzt ist.
+            'noindex' => $noindex,
         ]));
     }
 

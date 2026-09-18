@@ -17,7 +17,10 @@ type Props = {
         publishedAt: string | null;
         readingMinutes: number;
         stop: StopProps | null;
+        status: string;
     };
+    /** Angemeldet und noch nicht veroeffentlicht: nur du siehst das hier. */
+    isPreview: boolean;
     blocks: BlockProps[];
     composition: CompositionProps | null;
     comments: CommentProps[];
@@ -25,10 +28,39 @@ type Props = {
     neighbours: { previous: PostCard | null; next: PostCard | null };
 };
 
-export default function BlogShow({ post, blocks, composition, comments, stops, neighbours }: Props) {
+const PREVIEW_LABEL: Record<string, string> = {
+    draft: 'Entwurf',
+    scheduled: 'Geplant',
+};
+
+export default function BlogShow({
+    post,
+    isPreview,
+    blocks,
+    composition,
+    comments,
+    stops,
+    neighbours,
+}: Props) {
     return (
         <PublicLayout>
             <Head title={post.title} />
+
+            {isPreview && (
+                /*
+                  Die Seite sieht sonst genauso aus wie eine veroeffentlichte -
+                  ohne diesen Streifen haelt man einen Entwurf leicht fuer live.
+                */
+                <p
+                    role="status"
+                    className="label-xs flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-accent px-5 py-3 text-center text-paper"
+                >
+                    <span>Vorschau · {PREVIEW_LABEL[post.status] ?? post.status}</span>
+                    <span className="font-sans normal-case tracking-normal opacity-90">
+                        Nur für dich sichtbar, solange du angemeldet bist.
+                    </span>
+                </p>
+            )}
 
             <article>
                 <header className="mx-auto max-w-6xl px-5 pt-10 sm:px-8 sm:pt-16">

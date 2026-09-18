@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Stop;
 use App\Support\Seo;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -38,17 +39,28 @@ class PostController extends Controller
 
     public function show(string $slug): Response
     {
-        $post = Post::published()
+        $query = Post::query()
             ->where('slug', $slug)
-            ->with(['stop', 'coverMedia', 'composition', 'blocks', 'comments'])
-            ->firstOrFail();
+            ->with(['stop', 'coverMedia', 'composition', 'blocks', 'comments']);
 
-        $previous = Post::published()
+        // Angemeldet heisst Vorschau: ein Entwurf laesst sich unter seiner
+        // spaeteren Adresse ansehen, bevor er jemand anderem gehoert. Fuer
+        // alle uebrigen bleibt er, als gaebe es ihn nicht.
+        if (! Auth::check()) {
+            $query->published();
+        }
+
+        $post = $query->firstOrFail();
+        $isPreview = ! $post->isPublished();
+
+        // Ein Entwurf hat oft noch gar kein Datum; ohne das ergibt "davor" und
+        // "danach" nichts, und der Vergleich mit null faende ohnehin nichts.
+        $previous = $post->published_at === null ? null : Post::published()
             ->where('published_at', '<', $post->published_at)
             ->latest('published_at')
             ->first();
 
-        $next = Post::published()
+        $next = $post->published_at === null ? null : Post::published()
             ->where('published_at', '>', $post->published_at)
             ->oldest('published_at')
             ->first();
@@ -59,6 +71,7 @@ class PostController extends Controller
             image: $post->coverMedia?->url(),
             type: 'article',
             publishedAt: $post->published_at?->toIso8601String(),
+            noindex: $isPreview,
         );
 
         return Inertia::render('Blog/Show', [
@@ -70,7 +83,9 @@ class PostController extends Controller
                 'publishedAt' => $post->published_at?->toIso8601String(),
                 'readingMinutes' => $post->reading_minutes,
                 'stop' => $post->stop?->toMapProps(),
+                'status' => $post->status,
             ],
+            'isPreview' => $isPreview,
             'blocks' => $post->blocksWithMedia(),
             'composition' => $post->composition?->toPlayerProps(),
             'comments' => $post->comments->map->toPublicProps()->all(),

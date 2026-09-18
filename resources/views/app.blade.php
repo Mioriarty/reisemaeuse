@@ -12,6 +12,11 @@
     <title>{{ $title === 'Wandermäuse' ? $title : $title.' – Wandermäuse' }}</title>
     <meta name="description" content="{{ $description }}">
     <link rel="canonical" href="{{ $seo['url'] ?? url()->current() }}">
+    @if($seo['noindex'] ?? false)
+        {{-- Vorschau eines unveroeffentlichten Eintrags: darf nie in einen
+             Index geraten, auch wenn der Link einmal geteilt wird. --}}
+        <meta name="robots" content="noindex, nofollow">
+    @endif
 
     {{-- Server-rendered so link previews work without SSR. --}}
     <meta property="og:site_name" content="Wandermäuse">
