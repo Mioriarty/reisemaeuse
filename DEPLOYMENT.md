@@ -48,6 +48,52 @@ Zwei Stellen, beide brauchen **8.3 oder neuer** (Laravel 13 setzt 8.3 voraus):
 Der gleiche Wert muss in `.github/workflows/deploy.yml` unter `php-version`
 stehen, damit `vendor/` zur Laufzeitumgebung passt.
 
+## 1a. Upload-Grenzen
+
+Die Standardwerte des Webspace sind fuer ein Fotoblog zu eng. Beobachtet waren:
+`upload_max_filesize 8M`, `post_max_size 8M`, `memory_limit 128M`,
+`max_input_time 60`.
+
+Zwei Grenzen, die man leicht verwechselt:
+
+- **`upload_max_filesize`** gilt je Datei. Wird sie ueberschritten, kommt die
+  Datei leer bei Laravel an, und die Regel `image` meldet, das sei kein Bild.
+  Die Fehlermeldung zeigt also auf das Foto statt auf die Ursache.
+- **`post_max_size`** gilt fuer die **ganze Anfrage**. Die Verwaltung nimmt bis
+  zu 20 Bilder auf einmal an – drei Handyfotos sprengen 8M bereits. Wird sie
+  ueberschritten, verwirft PHP den kompletten Rumpf, also auch das CSRF-Feld:
+  Laravel antwortet dann mit **419 Page Expired**, nicht mit einem
+  Validierungsfehler. Wer 419 sieht, sucht an der falschen Stelle.
+
+Zielwerte:
+
+| Einstellung | Standard | Ziel | Warum |
+|---|---|---|---|
+| `upload_max_filesize` | 8M | 32M | `MediaController` erlaubt 24 MB je Datei; PHP muss darueber liegen |
+| `post_max_size` | 8M | 256M | muss den ganzen Stapel fassen, nicht die einzelne Datei |
+| `memory_limit` | 128M | 512M | ein Foto wird als Bitmap ausgepackt: Breite x Hoehe x 4 Byte. 12 MP sind rund 50 MB, 48 MP rund 200 MB |
+| `max_input_time` | 60 | 300 | Zeit zum Empfangen des Uploads – ein grosser Stapel dauert laenger |
+| `max_execution_time` | 180 | 300 | die Bildvarianten entstehen synchron, ohne Queue-Worker |
+
+Zwei Wege, sie zu setzen:
+
+1. **Im WCP unter *PHP-Einstellungen*.** Der verlaesslichere Weg, weil er
+   unabhaengig davon wirkt, wie PHP ausgefuehrt wird.
+2. **Ueber `public/.user.ini`.** Liegt im Repository und faehrt beim Deploy von
+   selbst mit. Greift nur, wenn PHP als FPM oder CGI laeuft – bei netcup ist
+   das der Fall, unter `mod_php` waere die Datei wirkungslos. Aenderungen
+   wirken erst nach bis zu fuenf Minuten (`user_ini.cache_ttl`).
+
+Setzt das WCP die Werte per `php_admin_value`, gewinnt es gegen `.user.ini`.
+Wenn nach einem Deploy nichts passiert, also dort nachsehen. Pruefen laesst es
+sich per SSH mit `php -i | grep upload_max_filesize` – das zeigt allerdings die
+Shell-Konfiguration, nicht die des Webs. Verlaesslich ist nur ein echter
+Upload-Versuch.
+
+`max_file_uploads` (Standard 20) laesst sich per `.user.ini` **nicht** setzen,
+die Einstellung ist `PHP_INI_SYSTEM`. Der Standard passt aber genau zu
+`files => max:20` im `MediaController`.
+
 ## 2. Dokumentenstamm
 
 Laravel darf nur den Ordner `public/` ausliefern – sonst liegen `.env` und
@@ -139,6 +185,8 @@ von Hand etwas ändern.
 | Weiße Seite, 500er | `open_basedir` umfasst `httpdocs` nicht, oder `.env` fehlt |
 | `.env` im Browser erreichbar | Dokumentenstamm zeigt auf `httpdocs` statt `httpdocs/public` |
 | Bilder fehlen (404) | `php artisan storage:link` erneut ausführen |
+| Upload sagt „ist kein Bild“, obwohl es eins ist | Datei groesser als `upload_max_filesize` – PHP verwirft sie vor Laravel. Schritt 1a |
+| Upload mehrerer Bilder endet mit 419 Page Expired | Stapel groesser als `post_max_size` – PHP verwirft den Rumpf samt CSRF-Feld. Schritt 1a |
 | Neue Migration nicht eingespielt | `php artisan wandermaeuse:post-deploy` von Hand ausführen |
 | Newsletter bleibt bei „wird versendet“ | Cronjob läuft nicht – Schritt 6 prüfen |
 | Anmeldung zum Newsletter liefert 500, Log zeigt `535` | `MAIL_HOST`/`MAIL_USERNAME`/`MAIL_PASSWORD` falsch. `MAIL_HOST` muss der netcup-Mailserver sein (`dig +short MX wandermaeuse.de`), danach `php artisan config:clear` |

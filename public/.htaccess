@@ -23,3 +23,16 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# .user.ini liegt im Dokumentenstamm, damit PHP sie findet. Sie enthaelt keine
+# Geheimnisse, hat im Web aber trotzdem nichts verloren. Die IfModule-Klammer
+# ist Absicht: ein unbekanntes Require wuerde die ganze Seite mit 500 beenden.
+<Files ".user.ini">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
