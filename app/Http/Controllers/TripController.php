@@ -15,7 +15,7 @@ class TripController extends Controller
             ->orderBy('position')
             ->get();
 
-        Seo::set('Die Route', 'Alle Stationen unserer Reise durch Südamerika auf einer Karte.');
+        Seo::set('Die Route', 'Alle Stationen unserer Reise durch Süd- und Mittelamerika auf einer Karte.');
 
         return Inertia::render('Reise', [
             'stops' => $stops->map(fn (Stop $stop) => [

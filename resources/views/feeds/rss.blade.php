@@ -4,7 +4,7 @@
         <title>Wandermäuse</title>
         <link>{{ url('/') }}</link>
         <atom:link href="{{ route('feed') }}" rel="self" type="application/rss+xml"/>
-        <description>Ein Reiseblog über unsere Reise durch Südamerika.</description>
+        <description>Ein Reiseblog über unsere Reise durch Süd- und Mittelamerika.</description>
         <language>de-DE</language>
         @if ($posts->isNotEmpty())
             <lastBuildDate>{{ $posts->first()->published_at?->toRfc2822String() }}</lastBuildDate>

@@ -1,6 +1,6 @@
 # wandermäuse
 
-Ein Reiseblog für unsere Südamerikareise – [wandermaeuse.de](https://wandermaeuse.de).
+Ein Reiseblog für unsere Reise durch Süd- und Mittelamerika – [wandermaeuse.de](https://wandermaeuse.de).
 
 Jeder Eintrag zeigt zuerst die Karte mit der ganzen Route und der aktuellen
 Station, dann die Komposition, die dort entstanden ist, dann den Text mit den

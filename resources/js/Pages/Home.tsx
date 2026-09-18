@@ -49,8 +49,12 @@ export default function Home({ posts, stops, intro }: Props) {
                     <h1 className="photo-text max-w-[14ch] font-display text-[clamp(3rem,12vw,9rem)] leading-[0.92] text-white">
                         Wandermäuse
                     </h1>
+                    {/* Auf dem Handy bricht die Zeile. Ohne den Zusammenhalt faellt
+                        der Umbruch hinter "SÜD- UND", und der Ergaenzungsstrich
+                        sieht aus wie eine getrennte Silbe. */}
                     <p className="label-xs photo-text mt-5 text-white sm:mt-6">
-                        Ein Reisetagebuch aus Südamerika
+                        Ein Reisetagebuch aus{' '}
+                        <span className="whitespace-nowrap">Süd- und Mittelamerika</span>
                     </p>
 
                     <a
