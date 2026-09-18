@@ -17,7 +17,11 @@ Reiseblog auf Laravel 13 + Inertia 3 + React 19 + TypeScript + Tailwind 4.
   Case im Enum, eine Komponente, ein Eintrag in `Blocks/index.tsx` und ein Fall
   in `BlockEditor.tsx` – sonst nichts.
 - Die Karte ist selbst gerendertes SVG (`RouteMap.tsx`, d3-geo, GeoJSON in
-  `resources/js/lib/`). **Keine Kartenkacheln von Dritten einbauen** – die
+  `resources/js/lib/americas.geo.json` – Mexiko, Mittelamerika, die Karibik
+  und Suedamerika; die USA und Kanada bewusst nicht, die Reise beginnt in
+  Mexiko). Das 4:5 des viewBox ist genau das Seitenverhaeltnis dieser
+  Landmasse in Mercator: wer Laender hinzunimmt oder entfernt, muss es
+  nachrechnen, sonst steht die Karte mit Rand im Rahmen. **Keine Kartenkacheln von Dritten einbauen** – die
   Datenschutzerklärung sagt ausdrücklich zu, dass die Seite keine fremden
   Server kontaktiert. Das Gleiche gilt für Schriften und eingebettete Videos.
 

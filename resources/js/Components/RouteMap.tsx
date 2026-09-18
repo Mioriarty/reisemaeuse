@@ -5,7 +5,7 @@ import { select } from 'd3-selection';
 import 'd3-transition';
 import { zoom as d3zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
 import type { FeatureCollection } from 'geojson';
-import land from '@/lib/south-america.geo.json';
+import land from '@/lib/americas.geo.json';
 import type { StopProps } from '@/types';
 
 const W = 800;
@@ -141,10 +141,12 @@ export default function RouteMap({ stops, focusStopId = null, onSelect, variant 
 
     const focusPoint = points.find((p) => p.stop.id === focusStopId);
 
-    // South America is tall: filling the container width would make the map
-    // 1400px high on a laptop. The frame keeps the viewBox's own 4:5 ratio and
-    // is capped in width, so the continent fills it exactly - no letterboxing,
-    // and on a phone it is simply the column width.
+    // Die Karte reicht von Nordmexiko bis Feuerland und ist damit deutlich
+    // hoeher als breit: ueber die volle Containerbreite waere sie auf einem
+    // Laptop 1400px hoch. Der Rahmen behaelt das 4:5 des viewBox - genau das
+    // Seitenverhaeltnis, das die Landmasse in Mercator hat - und ist in der
+    // Breite gedeckelt. So fuellt das Land den Rahmen ohne Rand, und auf dem
+    // Handy ist es einfach die Spaltenbreite.
     const frame =
         variant === 'compact'
             ? 'mx-auto aspect-[4/5] w-full max-w-[420px]'
@@ -160,8 +162,8 @@ export default function RouteMap({ stops, focusStopId = null, onSelect, variant 
                 role="img"
                 aria-label={
                     focusPoint
-                        ? `Karte der Reiseroute durch Südamerika, hervorgehoben: ${focusPoint.stop.name}`
-                        : 'Karte der Reiseroute durch Südamerika'
+                        ? `Karte der Reiseroute von Mexiko bis Feuerland, hervorgehoben: ${focusPoint.stop.name}`
+                        : 'Karte der Reiseroute von Mexiko bis Feuerland'
                 }
             >
                 <g transform={transform.toString()}>
