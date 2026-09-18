@@ -46,6 +46,10 @@ netcup Shared Hosting, kein Root, keine Dauerprozesse:
   Die Verwaltung benutzt `font-ui` und behält damit echte fette Schnitte.
 - Schriften werden beim Bauen heruntergeladen (`bunny(...)` in
   `vite.config.ts`) und von der eigenen Domain ausgeliefert.
+- `php artisan migrate:fresh --seed` legt echte Landschaftsfotos an: der
+  Seeder holt sie einmal von Wikimedia Commons (`DemoPhotoLibrary`) und legt
+  sie unter `storage/app/private/demo-photos` ab, danach geht es offline. Ohne
+  Netz treten farbige Platzhalter an ihre Stelle, Seeden scheitert nie daran.
 - Newsletter: Double Opt-in ist in Deutschland Pflicht. Unbestätigte Adressen
   dürfen nie eine Kampagne bekommen (`Subscriber::scopeMailable`).
 - Vor dem Commit: `php artisan test` und `npx tsc --noEmit`.

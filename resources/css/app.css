@@ -99,6 +99,16 @@
     text-transform: uppercase;
 }
 
+/*
+ * Schrift, die direkt auf einem Foto liegt. Der Verlauf darunter traegt die
+ * Lesbarkeit, aber ein heller Himmel kann jede Stelle aufhellen - die weiche
+ * Kante ist die Versicherung dagegen. Sie gilt nur hier: Flaechen und Kaesten
+ * bleiben im uebrigen Entwurf schattenlos.
+ */
+@utility photo-text {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
 /* Unterstrichener Verweis neben einer Ueberschrift ("Alle Eintraege"). */
 @utility link-underline {
     text-decoration: underline;

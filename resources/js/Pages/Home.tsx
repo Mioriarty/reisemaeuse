@@ -13,13 +13,18 @@ type Props = {
 };
 
 /*
- * Damit der Titel auf jedem Foto lesbar bleibt, liegt ein Verlauf darueber:
- * oben dunkel fuer Titel und Unterzeile, unten dunkel fuer den Hinweis nach
- * unten, in der Mitte fast nichts, damit das Bild Bild bleibt.
+ * Damit die Schrift auf jedem Foto lesbar bleibt, liegen zwei Verlaeufe ueber
+ * dem Bild. Der senkrechte nimmt oben und unten die Helligkeit, der waagerechte
+ * dunkelt die linke Spalte ab - dort steht alles, Titel wie Hinweis. Rechts
+ * bleibt das Foto unangetastet, und genau das ist der Unterschied zu einem
+ * gleichmaessigen Schleier ueber dem ganzen Bild.
  */
-const SCRIM =
-    'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.22) 38%,' +
-    ' rgba(0,0,0,0.14) 62%, rgba(0,0,0,0.52) 100%)';
+const SCRIM = [
+    'linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.28) 30%,' +
+        ' rgba(0,0,0,0.08) 55%, rgba(0,0,0,0) 75%)',
+    'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 30%,' +
+        ' rgba(0,0,0,0.1) 65%, rgba(0,0,0,0.45) 100%)',
+].join(', ');
 
 export default function Home({ posts, stops, intro }: Props) {
     // Das Titelbild ist das Aufmacherfoto des juengsten Eintrags, der eines hat.
@@ -41,16 +46,16 @@ export default function Home({ posts, stops, intro }: Props) {
                 <div aria-hidden className="absolute inset-0" style={{ backgroundImage: SCRIM }} />
 
                 <div className="relative flex h-full flex-col px-5 pt-[22vh] pb-8 sm:px-8 sm:pt-[26vh] sm:pb-10">
-                    <h1 className="max-w-[14ch] font-display text-[clamp(3rem,12vw,9rem)] leading-[0.92] text-white">
+                    <h1 className="photo-text max-w-[14ch] font-display text-[clamp(3rem,12vw,9rem)] leading-[0.92] text-white">
                         Wandermäuse
                     </h1>
-                    <p className="label-xs mt-5 text-white/85 sm:mt-6">
+                    <p className="label-xs photo-text mt-5 text-white sm:mt-6">
                         Ein Reisetagebuch aus Südamerika
                     </p>
 
                     <a
                         href="#eintraege"
-                        className="label-xs mt-auto inline-flex min-h-11 items-center gap-3 self-start text-white/85 transition-colors hover:text-white"
+                        className="label-xs photo-text mt-auto inline-flex min-h-11 items-center gap-3 self-start text-white/90 transition-colors hover:text-white"
                     >
                         Einträge
                         <span aria-hidden className="text-base leading-none">

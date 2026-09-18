@@ -118,9 +118,12 @@ class MediaService
     private function dominantColor(ImageInterface $image): string
     {
         try {
+            // Der Analyzer liefert bereits eine RGB-Farbe. Ein convertTo() darauf
+            // gibt es in Intervention 4 nicht - der Aufruf landete frueher immer
+            // im catch, und jedes Foto bekam die neutrale Ausweichfarbe.
             $color = $image->analyze(new DominantPaletteAnalyzer(limit: 1))->first();
 
-            return $color ? '#'.ltrim($color->convertTo('rgb')->toHex(), '#') : '#e6e4de';
+            return $color ? '#'.ltrim($color->toHex(), '#') : '#e6e4de';
         } catch (Throwable) {
             return '#e6e4de';
         }
