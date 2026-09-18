@@ -23,7 +23,7 @@ export default function Reise({ stops }: { stops: StopWithPosts[] }) {
                     Die Route
                 </h1>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-graphite">
-                    Zwei Finger zum Bewegen und Zoomen – oder tippe eine Station an.
+                    Tippe eine Station an – die Liste springt zur passenden Stelle.
                 </p>
             </div>
 

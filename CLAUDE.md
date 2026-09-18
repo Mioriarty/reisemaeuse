@@ -21,7 +21,10 @@ Reiseblog auf Laravel 13 + Inertia 3 + React 19 + TypeScript + Tailwind 4.
   und Suedamerika; die USA und Kanada bewusst nicht, die Reise beginnt in
   Mexiko). Das 4:5 des viewBox ist genau das Seitenverhaeltnis dieser
   Landmasse in Mercator: wer Laender hinzunimmt oder entfernt, muss es
-  nachrechnen, sonst steht die Karte mit Rand im Rahmen. **Keine Kartenkacheln von Dritten einbauen** – die
+  nachrechnen, sonst steht die Karte mit Rand im Kasten. Die Karte ist eine
+  reine Umrisszeichnung: graue Grenzen, keine Fuellung, kein Hintergrund, kein
+  Rahmen, kein Zoom und keine Ortsnamen im Bild. Die Namen stehen in der Liste
+  darunter und als `<title>` an jedem Punkt. **Keine Kartenkacheln von Dritten einbauen** – die
   Datenschutzerklärung sagt ausdrücklich zu, dass die Seite keine fremden
   Server kontaktiert. Das Gleiche gilt für Schriften und eingebettete Videos.
 
