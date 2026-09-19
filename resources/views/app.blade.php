@@ -38,6 +38,12 @@
     <link rel="alternate" type="application/rss+xml" title="Wandermäuse" href="{{ route('feed') }}">
 
     @routes
+    {{-- Die @font-face-Regeln der selbst gehosteten Schriften. Ohne diese Zeile
+         baut Vite die Schriftdateien zwar, verlinkt sie aber nirgends: die
+         Seite faellt dann still auf ui-serif zurueck, und das sieht auf jedem
+         Geraet anders aus. Steht vor @vite, damit die Preloads frueh kommen. --}}
+    {{ Illuminate\Support\Facades\Vite::fonts() }}
+
     {{-- Muss vor @vite stehen: sonst findet @vitejs/plugin-react im Dev-Modus
          seine Preamble nicht und die Seite hydratisiert nie. --}}
     @viteReactRefresh
